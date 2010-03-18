@@ -443,11 +443,22 @@
    </property>
   </action>
   <action name="actionCompile">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/system-run.png</normaloff>:/icons/system-run.png</iconset>
+   </property>
    <property name="text">
     <string>Compile</string>
    </property>
   </action>
   <action name="actionUpload_program">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/run-build.png</normaloff>:/icons/run-build.png</iconset>
+   </property>
    <property name="text">
     <string>Upload program</string>
    </property>
@@ -456,16 +467,28 @@
    </property>
   </action>
   <action name="actionShow_Listing">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/text-plain.png</normaloff>:/icons/text-plain.png</iconset>
+   </property>
    <property name="text">
     <string>Show listing</string>
    </property>
   </action>
   <action name="actionShow_HEX">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/text-x-hex.png</normaloff>:/icons/text-x-hex.png</iconset>
+   </property>
    <property name="text">
     <string>Show HEX</string>
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
+   </property>
    <property name="text">
     <string>About</string>
    </property>

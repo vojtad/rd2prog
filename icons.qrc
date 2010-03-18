@@ -22,5 +22,10 @@
         <file>icons/settings-refresh.png</file>
         <file>icons/information.png</file>
         <file>icons/icon.png</file>
+        <file>icons/arrow-right.png</file>
+        <file>icons/text-x-hex.png</file>
+        <file>icons/text-plain.png</file>
+        <file>icons/system-run.png</file>
+        <file>icons/run-build.png</file>
     </qresource>
 </RCC>
