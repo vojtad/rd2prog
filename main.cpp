@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+	QApplication a(argc, argv);
 
 	a.setOrganizationName("Drbohlav");
 	a.setApplicationName("RD2prog");
@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
 
 	a.installTranslator(&t);
 
-	MainWindow w(argc, argv);
-    w.show();
+	MainWindow w;
+	w.show();
 
-    return a.exec();
+	return a.exec();
 }

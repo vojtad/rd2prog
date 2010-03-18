@@ -9,7 +9,7 @@
 
 class SettingsDialog : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 	SettingsDialog(QWidget * parent = 0);
 	~SettingsDialog();
@@ -36,11 +36,11 @@ private:
 
 private slots:
 	void on_pushButton_clicked();
-	void on_comboBoxBaudrate_currentIndexChanged(QString speed);
-	void on_comboBoxPort_currentIndexChanged(QString port);
+	void on_comboBoxBaudrate_currentIndexChanged(const QString & speed);
+	void on_comboBoxPort_currentIndexChanged(const QString & port);
 
 	void saveSettings();
-	void checkAssemblerPath(QString text);
+	void checkAssemblerPath(const QString & text);
 };
 
 #endif // SettingsDialog_H

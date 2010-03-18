@@ -17,7 +17,7 @@
    <string notr="true">RD2prog</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="icons.qrc">
     <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
   </property>
   <property name="locale">
@@ -50,7 +50,7 @@
         <bool>false</bool>
        </property>
        <attribute name="headerVisible">
-        <bool>false</bool>
+        <bool>true</bool>
        </attribute>
        <attribute name="headerHighlightSections">
         <bool>false</bool>
@@ -59,7 +59,7 @@
         <bool>true</bool>
        </attribute>
        <attribute name="headerVisible">
-        <bool>false</bool>
+        <bool>true</bool>
        </attribute>
        <attribute name="headerHighlightSections">
         <bool>false</bool>
@@ -263,7 +263,7 @@
   </widget>
   <action name="actionNew">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/file-new.png</normaloff>:/icons/file-new.png</iconset>
    </property>
    <property name="text">
@@ -272,7 +272,7 @@
   </action>
   <action name="actionOpen_File">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/file-open.png</normaloff>:/icons/file-open.png</iconset>
    </property>
    <property name="text">
@@ -284,7 +284,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/edit-undo.png</normaloff>:/icons/edit-undo.png</iconset>
    </property>
    <property name="text">
@@ -296,7 +296,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/edit-redo.png</normaloff>:/icons/edit-redo.png</iconset>
    </property>
    <property name="text">
@@ -305,7 +305,7 @@
   </action>
   <action name="actionCut">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/edit-cut.png</normaloff>:/icons/edit-cut.png</iconset>
    </property>
    <property name="text">
@@ -314,7 +314,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/edit-copy.png</normaloff>:/icons/edit-copy.png</iconset>
    </property>
    <property name="text">
@@ -323,7 +323,7 @@
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/edit-paste.png</normaloff>:/icons/edit-paste.png</iconset>
    </property>
    <property name="text">
@@ -332,7 +332,7 @@
   </action>
   <action name="actionDelete">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/edit-delete.png</normaloff>:/icons/edit-delete.png</iconset>
    </property>
    <property name="text">
@@ -341,7 +341,7 @@
   </action>
   <action name="actionSelect_All">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/edit-select-all.png</normaloff>:/icons/edit-select-all.png</iconset>
    </property>
    <property name="text">
@@ -353,7 +353,7 @@
   </action>
   <action name="actionRecent_Files">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/file-open-recent.png</normaloff>:/icons/file-open-recent.png</iconset>
    </property>
    <property name="text">
@@ -362,7 +362,7 @@
   </action>
   <action name="actionSettings">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/settings-serial-port-settings.png</normaloff>:/icons/settings-serial-port-settings.png</iconset>
    </property>
    <property name="text">
@@ -377,7 +377,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/file-save.png</normaloff>:/icons/file-save.png</iconset>
    </property>
    <property name="text">
@@ -389,7 +389,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/file-save-all.png</normaloff>:/icons/file-save-all.png</iconset>
    </property>
    <property name="text">
@@ -398,7 +398,7 @@
   </action>
   <action name="actionSave_File_As">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/file-save-as.png</normaloff>:/icons/file-save-as.png</iconset>
    </property>
    <property name="text">
@@ -407,7 +407,7 @@
   </action>
   <action name="actionClose_File">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/file-close.png</normaloff>:/icons/file-close.png</iconset>
    </property>
    <property name="text">
@@ -421,7 +421,7 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/file-exit.png</normaloff>:/icons/file-exit.png</iconset>
    </property>
    <property name="text">
@@ -430,7 +430,7 @@
   </action>
   <action name="actionSelect_Font">
    <property name="icon">
-    <iconset>
+    <iconset resource="icons.qrc">
      <normaloff>:/icons/settings-select-font.png</normaloff>:/icons/settings-select-font.png</iconset>
    </property>
    <property name="text">
@@ -494,7 +494,9 @@
    <header>MyTextEdit.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionCopy</sender>

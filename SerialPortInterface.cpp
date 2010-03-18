@@ -17,7 +17,7 @@ extern "C"
 #include <libudev.h>
 }
 
-SerialPortInterface::SerialPortInterface(SerialPortSettings settings, QObject * parent) :
+SerialPortInterface::SerialPortInterface(const SerialPortSettings & settings, QObject * parent) :
 		QIODevice(parent),
 		m_settings(settings)
 {
@@ -213,8 +213,9 @@ qint64 SerialPortInterface::writeData(const char * data, qint64 maxSize)
 
 #include <Windows.h>
 
-SerialPortInterface::SerialPortInterface(SerialPortSettings settings, QObject * parent) :
-		QIODevice(parent)
+SerialPortInterface::SerialPortInterface(const SerialPortSettings & settings, QObject * parent) :
+		QIODevice(parent),
+		m_settings(settings)
 {
 }
 
@@ -230,47 +231,29 @@ QStringList SerialPortInterface::getPorts()
 
 		SP_DEVINFO_DATA devInfoData = { sizeof(SP_DEVINFO_DATA) };
 		SP_DEVICE_INTERFACE_DATA intData;
-                SP_DEVICE_INTERFACE_DETAIL_DATA * detData = (SP_DEVICE_INTERFACE_DETAIL_DATA *) new char[detDataSize];
+				SP_DEVICE_INTERFACE_DETAIL_DATA * detData = (SP_DEVICE_INTERFACE_DETAIL_DATA *) new char[detDataSize];
 
 		intData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
 		detData->cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
 
-                for(int i = 0; SetupDiGetDeviceInterfaceDetail(devInfo, &intData, detData, detDataSize, NULL, &devInfoData); ++i)
+				for(int i = 0; SetupDiGetDeviceInterfaceDetail(devInfo, &intData, detData, detDataSize, NULL, &devInfoData); ++i)
 		{
-                        DWORD bufSize;
-                        SetupDiGetDeviceRegistryProperty(devInfo, &devInfoData, SPDRP_FRIENDLYNAME, NULL, NULL, 0, &bufSize);
-                        BYTE buff[bufSize];
-                        SetupDiGetDeviceRegistryProperty(devInfo, &devInfoData, SPDRP_FRIENDLYNAME, NULL, buff, bufSize, NULL);
+						DWORD bufSize;
+						SetupDiGetDeviceRegistryProperty(devInfo, &devInfoData, SPDRP_FRIENDLYNAME, NULL, NULL, 0, &bufSize);
+						BYTE buff[bufSize];
+						SetupDiGetDeviceRegistryProperty(devInfo, &devInfoData, SPDRP_FRIENDLYNAME, NULL, buff, bufSize, NULL);
 			ret.append(QString::fromUtf16((ushort*)(buff)));
 		}
 
 		SetupDiDestroyDeviceInfoList(devInfo);
 	}
-	/*
-
-	DWORD cbNeeded, dwPorts;
-	EnumPorts(NULL, 1, NULL, 0, &cbNeeded, &dwPorts);
-
-	BYTE data[cbNeeded];
-	if(EnumPorts(NULL, 1, data, cbNeeded, &cbNeeded, &dwPorts))
-	{
-		QRegExp rx("(COM\\d+).*");
-		PORT_INFO_1 * portInfo = reinterpret_cast<PORT_INFO_1 *>(data);
-		for(DWORD i = 0; i < dwPorts; ++i, ++portInfo)
-		{
-
-			QString port = QString::fromWCharArray(portInfo->pName);
-			if(rx.indexIn(port, 0) != -1)
-				ret.append(rx.cap(1));
-		}
-	}*/
 
 	return ret;
 }
 
 bool SerialPortInterface::open(OpenMode mode)
 {
-       return isOpen();
+	   return isOpen();
 }
 
 void SerialPortInterface::close()
@@ -279,12 +262,12 @@ void SerialPortInterface::close()
 
 qint64 SerialPortInterface::size() const
 {
-        return 0;
+		return 0;
 }
 
 qint64 SerialPortInterface::bytesAvailable() const
 {
-        return 0;
+		return 0;
 }
 
 void SerialPortInterface::setRTS(bool set)
@@ -297,12 +280,12 @@ void SerialPortInterface::setDTR(bool set)
 
 qint64 SerialPortInterface::readData(char * data, qint64 maxSize)
 {
-        return 0;
+		return 0;
 }
 
 qint64 SerialPortInterface::writeData(const char * data, qint64 maxSize)
 {
-        return 0;
+		return 0;
 }
 
 #else
@@ -319,7 +302,7 @@ bool SerialPortInterface::isSequential() const
 	return true;
 }
 
-void SerialPortInterface::debugMessage(QString msg)
+void SerialPortInterface::debugMessage(const QString & msg) const
 {
 	qDebug() << m_settings.m_name << ": " << msg;
 }
@@ -329,18 +312,17 @@ bool SerialPortInterface::waitForReadyRead(int msecs)
 	usleep(1000);
 
 	QMutex mutex;
+	QMutexLocker locker(&mutex);
 
 	if(bytesAvailable() == 0 && !m_readWaitCond.wait(&mutex, msecs))
 	{
-		mutex.unlock();
 		return false;
 	}
 
-	mutex.unlock();
 	return true;
 }
 
-bool SerialPortInterface::waitForReadyRead(int msecs, size_t bytes)
+bool SerialPortInterface::waitForReadyRead(int msecs, int bytes)
 {
 	while(bytesAvailable() < bytes)
 	{

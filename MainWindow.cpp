@@ -42,7 +42,7 @@ QString generateTempPath()
 	return path;
 }
 
-MainWindow::MainWindow(int argc, char ** argv, QWidget *parent) :
+MainWindow::MainWindow(QWidget * parent) :
 	QMainWindow(parent),
 	m_unnamedFilesCounter(0),
 	m_treeModel(this, &m_files),
@@ -107,9 +107,10 @@ MainWindow::MainWindow(int argc, char ** argv, QWidget *parent) :
 	connect(&m_process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(compiled(int, QProcess::ExitStatus)));
 	connect(ui.actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-	for(int i = 1; i < argc; ++i)
+	if(qApp->arguments().size() > 1)
 	{
-		m_files.append(new MyFile(argv[i], false));
+		for(QStringList::const_iterator it = qApp->arguments().begin() + 1; it != qApp->arguments().end(); ++it)
+			m_files.append(new MyFile(*it, false));
 	}
 
 	loadSettings();
@@ -153,7 +154,7 @@ MyFile * MainWindow::currentFile()
 	return NULL;
 }
 
-void MainWindow::newFile(QString path)
+void MainWindow::newFile(const QString & path)
 {
 	MyFile * f;
 	if(path.isEmpty())
@@ -231,7 +232,7 @@ void MainWindow::on_actionClose_File_triggered()
 	delete f;
 }
 
-void MainWindow::currentChanged(QModelIndex current, QModelIndex prev)
+void MainWindow::currentChanged(const QModelIndex & current, const QModelIndex & prev)
 {
 	Q_UNUSED(prev);
 
@@ -275,7 +276,7 @@ void MainWindow::on_textEdit_textChanged()
 	ui.textEdit->highlightLines();
 }
 
-int MainWindow::isOpened(QString s)
+int MainWindow::isOpened(const QString & s) const
 {
 	int i = 0;
 	foreach(MyFile * f, m_files)
@@ -432,7 +433,7 @@ void MainWindow::saveSettings()
 	s->setValue("recentFiles/list", m_recentFiles);
 }
 
-void MainWindow::addRecentFile(QString path)
+void MainWindow::addRecentFile(const QString & path)
 {
 	m_recentFiles.removeAll(path);
 	m_recentFiles.prepend(path);
@@ -476,7 +477,7 @@ void MainWindow::on_actionSave_File_triggered()
 		ui.actionSave_All_Files->setEnabled(false);
 }
 
-bool MainWindow::isAllSaved()
+bool MainWindow::isAllSaved() const
 {
 	foreach(MyFile * f, m_files)
 	{
@@ -742,7 +743,7 @@ void MainWindow::on_actionShow_HEX_triggered()
 	}
 }
 
-void MainWindow::on_treeViewCompileIssues_activated(QModelIndex index)
+void MainWindow::on_treeViewCompileIssues_activated(const QModelIndex & index)
 {
 	if(index.isValid())
 	{

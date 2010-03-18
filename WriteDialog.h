@@ -24,7 +24,7 @@ class WriteThread : public SynchronizationThread
 
 class WriteDialog : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 	public:
 		WriteDialog(const SerialPortSettings & settings, const QList<QByteArray> & data, QWidget * parent);
 		~WriteDialog();
@@ -43,11 +43,11 @@ class WriteDialog : public QDialog
 		QListWidgetItem * m_currentItem;
 
 	private slots:
-  void on_pushButtonClose_clicked();
-  void on_actionEnter_triggered();
+		void on_pushButtonClose_clicked();
+		void on_actionEnter_triggered();
 
 		void onMessage(int m);
-		void printBytes(QByteArray bytes);
+		void printBytes(const QByteArray & bytes);
 		void syncOk();
 		void syncFailed();
 		void writingOk();

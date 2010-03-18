@@ -8,7 +8,7 @@
 
 #include "MyTextEdit.h"
 
-MyFile::MyFile(QString path, bool n)
+MyFile::MyFile(const QString & path, bool n)
 {
 	m_document.setDocumentLayout(new QPlainTextDocumentLayout(&m_document));
 	new Highlighter(&m_document);

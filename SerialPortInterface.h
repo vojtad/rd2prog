@@ -37,7 +37,7 @@ class SerialPortInterface : public QIODevice
 	Q_OBJECT
 
 	public:
-		SerialPortInterface(SerialPortSettings settings, QObject * parent);
+		SerialPortInterface(const SerialPortSettings & settings, QObject * parent);
 		~SerialPortInterface();
 
 		static QStringList getPorts();
@@ -54,7 +54,7 @@ class SerialPortInterface : public QIODevice
 		qint64 writeData(const char * data, qint64 maxSize);
 
 		bool waitForReadyRead(int msecs);
-		bool waitForReadyRead(int msecs, size_t bytes);
+		bool waitForReadyRead(int msecs, int bytes);
 
 		void setRTS(bool set);
 		void setDTR(bool set);
@@ -70,7 +70,7 @@ class SerialPortInterface : public QIODevice
 #elif defined(Q_OS_WIN)
 #endif
 
-		void debugMessage(QString msg);
+		void debugMessage(const QString & msg) const;
 
 	private slots:
 		void slotReadyRead();

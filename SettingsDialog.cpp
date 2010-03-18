@@ -16,7 +16,7 @@ SettingsDialog::SettingsDialog(QWidget * parent) :
 		m_settings = new QSettings("G:\\profily\\QRD2\\qrd2.ini", QSettings::IniFormat, this);
 	}
 
-    ui.setupUi(this);
+	ui.setupUi(this);
 
 	ui.comboBoxPort->addItems(SerialPortInterface::getPorts());
 
@@ -38,15 +38,15 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::changeEvent(QEvent *e)
 {
-    QDialog::changeEvent(e);
+	QDialog::changeEvent(e);
 	switch (e->type())
 	{
-    case QEvent::LanguageChange:
-        ui.retranslateUi(this);
-        break;
-    default:
-        break;
-    }
+	case QEvent::LanguageChange:
+		ui.retranslateUi(this);
+		break;
+	default:
+		break;
+	}
 }
 
 const SerialPortSettings & SettingsDialog::portSettings() const
@@ -64,14 +64,14 @@ bool SettingsDialog::saveLstHexWithSource() const
 	return ui.checkBoxSaveLstHEX->isChecked();
 }
 
-void SettingsDialog::on_comboBoxPort_currentIndexChanged(QString port)
+void SettingsDialog::on_comboBoxPort_currentIndexChanged(const QString & port)
 {
 	m_portSettings.m_name = port;
 
 	checkPort();
 }
 
-void SettingsDialog::on_comboBoxBaudrate_currentIndexChanged(QString speed)
+void SettingsDialog::on_comboBoxBaudrate_currentIndexChanged(const QString & speed)
 {
 	m_portSettings.m_baudrate = speed.toInt();
 
@@ -171,7 +171,7 @@ void SettingsDialog::on_pushButton_clicked()
 	checkPort();
 }
 
-void SettingsDialog::checkAssemblerPath(QString text)
+void SettingsDialog::checkAssemblerPath(const QString & text)
 {
 	QFileInfo fi(text);
 

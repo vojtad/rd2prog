@@ -15,7 +15,7 @@ typedef QVector<MyFile *> FileList;
 class MyFile
 {
 	public:
-		MyFile(QString path, bool n);
+		MyFile(const QString & path, bool n);
 		~MyFile();
 
 		inline const QString & name() const { return m_name; }

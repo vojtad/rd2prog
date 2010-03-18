@@ -126,7 +126,7 @@ WriteDialog::WriteDialog(const SerialPortSettings & settings, const QList<QByteA
 	m_serialPortInterface(settings, this),
 	m_thread(&m_serialPortInterface, &m_waitCondition, data)
 {
-    ui.setupUi(this);
+	ui.setupUi(this);
 
 	connect(&m_thread, SIGNAL(readBytes(QByteArray)), this, SLOT(printBytes(QByteArray)));
 	connect(&m_thread, SIGNAL(wroteBytes(QByteArray)), this, SLOT(printBytes(QByteArray)));
@@ -157,15 +157,15 @@ WriteDialog::~WriteDialog()
 
 void WriteDialog::changeEvent(QEvent *e)
 {
-    QDialog::changeEvent(e);
+	QDialog::changeEvent(e);
 	switch (e->type())
 	{
-    case QEvent::LanguageChange:
-        ui.retranslateUi(this);
-        break;
-    default:
-        break;
-    }
+	case QEvent::LanguageChange:
+		ui.retranslateUi(this);
+		break;
+	default:
+		break;
+	}
 }
 
 void WriteDialog::on_actionEnter_triggered()
@@ -351,7 +351,7 @@ void WriteDialog::aborted()
 	ui.pushButtonClose->setEnabled(true);
 }
 
-void WriteDialog::printBytes(QByteArray bytes)
+void WriteDialog::printBytes(const QByteArray & bytes)
 {
 	if(!bytes.isEmpty())
 	{

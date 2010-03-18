@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 public:
-	MainWindow(int argc, char ** argv, QWidget *parent = 0);
+	MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
 	void closeEvent(QCloseEvent * event);
@@ -26,7 +26,7 @@ public:
 	bool save(MyFile * file, bool forceSaveDialog);
 
 protected:
-	void changeEvent(QEvent *e);
+	void changeEvent(QEvent * e);
 
 private:
 	Ui::MainWindow ui;
@@ -56,19 +56,19 @@ private:
 	CompileIssueModel m_compileIssueModel;
 
 	MyFile * currentFile();
-	void newFile(QString path = QString());
+	void newFile(const QString & path = QString());
 	void loadSettings();
 	void saveSettings();
-	void addRecentFile(QString path);
+	void addRecentFile(const QString & path);
 	void updateRecentFilesActions();
-	int isOpened(QString s);
+	int isOpened(const QString & s) const;
 	void compileCurrentFile();
-	bool isAllSaved();
+	bool isAllSaved() const;
 	void updateCurrentRow();
 
 private slots:
 	void on_actionFull_chip_erase_triggered();
- void on_treeViewCompileIssues_activated(QModelIndex index);
+	void on_treeViewCompileIssues_activated(const QModelIndex & index);
 	void on_actionShow_HEX_triggered();
 	void on_actionShow_Listing_triggered();
 	void on_actionUpload_program_triggered();
@@ -85,7 +85,7 @@ private slots:
 	void on_actionClose_File_triggered();
 	void on_actionNew_triggered();
 
-	void currentChanged(QModelIndex current, QModelIndex prev);
+	void currentChanged(const QModelIndex & current, const QModelIndex & prev);
 	void openRecentFile();
 	void compiled(int exitCode, QProcess::ExitStatus exitStatus);
 };
