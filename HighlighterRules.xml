@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<highlighterRules>
+	<rule italic="false" bold="true" color="deepskyblue"> <!-- instructions -->
+		<pattern>\bACALL\b</pattern>
+		<pattern>\bADD\b</pattern>
+		<pattern>\bADDC\b</pattern>
+		<pattern>\bAJMP\b</pattern>
+		<pattern>\bANL\b</pattern>
+		<pattern>\bCALL\b</pattern>
+		<pattern>\bCJNE\b</pattern>
+		<pattern>\bCLR\b</pattern>
+		<pattern>\bCPL\b</pattern>
+		<pattern>\bDA\b</pattern>
+		<pattern>\bDEC\b</pattern>
+		<pattern>\bDIV\b</pattern>
+		<pattern>\bDJNZ\b</pattern>
+		<pattern>\bINC\b</pattern>
+		<pattern>\bJB\b</pattern>
+		<pattern>\bJBC\b</pattern>
+		<pattern>\bJC\b</pattern>
+		<pattern>\bJMP\b</pattern>
+		<pattern>\bJNB\b</pattern>
+		<pattern>\bJNC\b</pattern>
+		<pattern>\bJNZ\b</pattern>
+		<pattern>\bJZ\b</pattern>
+		<pattern>\bLCALL\b</pattern>
+		<pattern>\bLJMP\b</pattern>
+		<pattern>\bMOV\b</pattern>
+		<pattern>\bMOVC\b</pattern>
+		<pattern>\bMOVX\b</pattern>
+		<pattern>\bMUL\b</pattern>
+		<pattern>\bNOP\b</pattern>
+		<pattern>\bORL\b</pattern>
+		<pattern>\bPOP\b</pattern>
+		<pattern>\bPUSH\b</pattern>
+		<pattern>\bRET\b</pattern>
+		<pattern>\bRETI\b</pattern>
+		<pattern>\bRL\b</pattern>
+		<pattern>\bRLC\b</pattern>
+		<pattern>\bRR\b</pattern>
+		<pattern>\bRRC\b</pattern>
+		<pattern>\bSETB\b</pattern>
+		<pattern>\bSJMP\b</pattern>
+		<pattern>\bSUBB\b</pattern>
+		<pattern>\bSWAP\b</pattern>
+		<pattern>\bXCH\b</pattern>
+		<pattern>\bXCHD\b</pattern>
+		<pattern>\bXRL\b</pattern>
+	</rule>
+
+	<rule italic="false" bold="false" color="red"> <!-- statements -->
+		<pattern>[$%-?A-Z][$%-?A-Z0-9]+:</pattern>
+	</rule>
+
+	<rule italic="false" bold="false" color="green"> <!-- data -->
+		<pattern>#\b[0-9][0-9A-F]*H\b</pattern>
+		<pattern>#\b[0-9]+D?\b</pattern>
+		<pattern>#\b[01]+B\b</pattern>
+	</rule>
+
+	<rule italic="false" bold="false" color="green"> <!-- string -->
+		<pattern>'.+'</pattern>
+	</rule>
+
+	<rule italic="false" bold="false" color="purple"> <!-- address -->
+		<pattern>[^#]\b[0-9A-F]+H\b</pattern>
+	</rule>
+
+	<rule italic="false" bold="false" color="blue"> <!-- registers -->
+		<pattern>\bR[0-9]\b</pattern>
+		<pattern>@\bR[01]\b</pattern>
+
+		<pattern>\bP[0-3]\b</pattern>
+		<pattern>\bP[0-3]\.[0-7]\b</pattern>
+		<pattern>\bSP\b</pattern>
+		<pattern>\bDPL\b</pattern>
+		<pattern>\bDPH\b</pattern>
+		<pattern>\bDPTR\b</pattern>
+		<pattern>\bPCON\b</pattern>
+		<pattern>\bICON\b</pattern>
+		<pattern>\bTMOD\b</pattern>
+		<pattern>\bTL0\b</pattern>
+		<pattern>\bTH0\b</pattern>
+		<pattern>\bTL1\b</pattern>
+		<pattern>\bTH1\b</pattern>
+		<pattern>\bSCON\b</pattern>
+		<pattern>\bSBUF\b</pattern>
+		<pattern>\bIE\b</pattern>
+		<pattern>\bIF\b</pattern>
+		<pattern>\bPSW\b</pattern>
+		<pattern>\bACC\b</pattern>
+		<pattern>\bA\b</pattern>
+		<pattern>\bB\b</pattern>
+
+		<pattern>\bCY\b</pattern>
+		<pattern>\bAC\b</pattern>
+		<pattern>\bF0\b</pattern>
+		<pattern>\bRS1\b</pattern>
+		<pattern>\bRS0\b</pattern>
+		<pattern>\bOV\b</pattern>
+		<pattern>\bP\b</pattern>
+		<pattern>\bPS\b</pattern>
+		<pattern>\bPT1\b</pattern>
+		<pattern>\bPX1\b</pattern>
+		<pattern>\bPT0\b</pattern>
+		<pattern>\bPX0\b</pattern>
+		<pattern>\bEA\b</pattern>
+		<pattern>\bES\b</pattern>
+		<pattern>\bET1\b</pattern>
+		<pattern>\bET0\b</pattern>
+		<pattern>\bEX1\b</pattern>
+		<pattern>\bEX0\b</pattern>
+		<pattern>\bTF1\b</pattern>
+		<pattern>\bTR1\b</pattern>
+		<pattern>\bTF0\b</pattern>
+		<pattern>\bTR0\b</pattern>
+		<pattern>\bIE1\b</pattern>
+		<pattern>\bIT1\b</pattern>
+		<pattern>\bIE0\b</pattern>
+		<pattern>\bIT0\b</pattern>
+		<pattern>\bSM0\b</pattern>
+		<pattern>\bSM1\b</pattern>
+		<pattern>\bSM2\b</pattern>
+		<pattern>\bREN\b</pattern>
+		<pattern>\bTB8\b</pattern>
+		<pattern>\bRB8\b</pattern>
+		<pattern>\bTI\b</pattern>
+		<pattern>\bRI\b</pattern>
+	</rule>
+
+	<rule italic="false" bold="true" color="black"> <!-- directives -->
+		<pattern>\bEQU\b</pattern>
+		<pattern>\bSET\b</pattern>
+		<pattern>\bBIT\b</pattern>
+		<pattern>\bCODE\b</pattern>
+		<pattern>\bDATA\b</pattern>
+		<pattern>\bIDATA\b</pattern>
+		<pattern>\bXDATA\b</pattern>
+		<pattern>\bCSEG\b</pattern>
+		<pattern>\bBSEG\b</pattern>
+		<pattern>\bDSEG\b</pattern>
+		<pattern>\bISEG\b</pattern>
+		<pattern>\bXSEG\b</pattern>
+		<pattern>\bDS\b</pattern>
+		<pattern>\bDBIT\b</pattern>
+		<pattern>\bDB\b</pattern>
+		<pattern>\bDW\b</pattern>
+		<pattern>\bORG\b</pattern>
+		<pattern>\bUSING\b</pattern>
+		<pattern>\bEND\b</pattern>
+		<pattern>\bIF\b</pattern>
+		<pattern>\bELSE\b</pattern>
+		<pattern>\bENDIF\b</pattern>
+		<pattern>\bMACRO\b</pattern>
+		<pattern>\bENDM\b</pattern>
+	</rule>
+	
+	<rule italic="true" bold="false" color="grey"> <!-- comments -->
+		<pattern>;.*$</pattern>
+	</rule>
+</highlighterRules>
+
+<!--
+	You can find info about pattern at .
+	Available color keywords are http://www.w3.org/TR/SVG/types.html#ColorKeywords or you can use color name in HEX, eg. #00FF00.
+
+-->

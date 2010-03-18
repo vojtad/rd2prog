@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>706</width>
+    <height>590</height>
+   </rect>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">RD2prog</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="MyTreeView" name="treeView">
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="rootIsDecorated">
+        <bool>false</bool>
+       </property>
+       <property name="itemsExpandable">
+        <bool>false</bool>
+       </property>
+       <property name="expandsOnDoubleClick">
+        <bool>false</bool>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="headerHighlightSections">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="headerStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="headerHighlightSections">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="headerStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+      </widget>
+      <widget class="QSplitter" name="splitter_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="MyTextEdit" name="textEdit">
+        <property name="font">
+         <font>
+          <family>Courier New</family>
+         </font>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Compile issues</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTreeView" name="treeViewCompileIssues">
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="rootIsDecorated">
+            <bool>false</bool>
+           </property>
+           <property name="itemsExpandable">
+            <bool>false</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="expandsOnDoubleClick">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>706</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_File"/>
+    <addaction name="actionRecent_Files"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_All_Files"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_File"/>
+    <addaction name="actionSave_File_As"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose_File"/>
+    <addaction name="actionClose_All_Files"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionAbout_Qt"/>
+   </widget>
+   <widget class="QMenu" name="menuBuild">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionCompile"/>
+    <addaction name="separator"/>
+    <addaction name="actionUpload_program"/>
+    <addaction name="separator"/>
+    <addaction name="actionFull_chip_erase"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionDelete"/>
+    <addaction name="separator"/>
+    <addaction name="actionSelect_All"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionSelect_Font"/>
+    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuBuild"/>
+   <addaction name="menuSettings"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="contextMenuPolicy">
+    <enum>Qt::NoContextMenu</enum>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNew"/>
+   <addaction name="separator"/>
+   <addaction name="actionOpen_File"/>
+   <addaction name="separator"/>
+   <addaction name="actionSave_File"/>
+   <addaction name="separator"/>
+   <addaction name="actionClose_File"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="contextMenuPolicy">
+    <enum>Qt::NoContextMenu</enum>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="toolBarShow">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionShow_Listing"/>
+   <addaction name="actionShow_HEX"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>true</bool>
+   </attribute>
+   <addaction name="actionCompile"/>
+   <addaction name="actionUpload_program"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarEdit">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
+  </widget>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/file-new.png</normaloff>:/icons/file-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionOpen_File">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/file-open.png</normaloff>:/icons/file-open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open file</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/edit-undo.png</normaloff>:/icons/edit-undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/edit-redo.png</normaloff>:/icons/edit-redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/edit-cut.png</normaloff>:/icons/edit-cut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cut</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/edit-copy.png</normaloff>:/icons/edit-copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/edit-paste.png</normaloff>:/icons/edit-paste.png</iconset>
+   </property>
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/edit-delete.png</normaloff>:/icons/edit-delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionSelect_All">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/edit-select-all.png</normaloff>:/icons/edit-select-all.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select all</string>
+   </property>
+   <property name="toolTip">
+    <string>Select all</string>
+   </property>
+  </action>
+  <action name="actionRecent_Files">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/file-open-recent.png</normaloff>:/icons/file-open-recent.png</iconset>
+   </property>
+   <property name="text">
+    <string>Recent files</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/settings-serial-port-settings.png</normaloff>:/icons/settings-serial-port-settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionSave_File">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/file-save.png</normaloff>:/icons/file-save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save File</string>
+   </property>
+  </action>
+  <action name="actionSave_All_Files">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/file-save-all.png</normaloff>:/icons/file-save-all.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save all files</string>
+   </property>
+  </action>
+  <action name="actionSave_File_As">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/file-save-as.png</normaloff>:/icons/file-save-as.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save file as...</string>
+   </property>
+  </action>
+  <action name="actionClose_File">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/file-close.png</normaloff>:/icons/file-close.png</iconset>
+   </property>
+   <property name="text">
+    <string>Close file</string>
+   </property>
+  </action>
+  <action name="actionClose_All_Files">
+   <property name="text">
+    <string>Close all files</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/file-exit.png</normaloff>:/icons/file-exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionSelect_Font">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/icons/settings-select-font.png</normaloff>:/icons/settings-select-font.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select font</string>
+   </property>
+  </action>
+  <action name="actionClear_recent_files">
+   <property name="text">
+    <string>Clear recent files</string>
+   </property>
+  </action>
+  <action name="actionCompile">
+   <property name="text">
+    <string>Compile</string>
+   </property>
+  </action>
+  <action name="actionUpload_program">
+   <property name="text">
+    <string>Upload program</string>
+   </property>
+   <property name="toolTip">
+    <string>Upload program</string>
+   </property>
+  </action>
+  <action name="actionShow_Listing">
+   <property name="text">
+    <string>Show listing</string>
+   </property>
+  </action>
+  <action name="actionShow_HEX">
+   <property name="text">
+    <string>Show HEX</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionFull_chip_erase">
+   <property name="text">
+    <string>Full chip erase</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>MyTreeView</class>
+   <extends>QTreeView</extends>
+   <header>MyTreeView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>MyTextEdit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionCopy</sender>
+   <signal>triggered()</signal>
+   <receiver>textEdit</receiver>
+   <slot>copy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>486</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCut</sender>
+   <signal>triggered()</signal>
+   <receiver>textEdit</receiver>
+   <slot>cut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>486</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPaste</sender>
+   <signal>triggered()</signal>
+   <receiver>textEdit</receiver>
+   <slot>paste()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>486</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRedo</sender>
+   <signal>triggered()</signal>
+   <receiver>textEdit</receiver>
+   <slot>redo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>486</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSelect_All</sender>
+   <signal>triggered()</signal>
+   <receiver>textEdit</receiver>
+   <slot>selectAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>486</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUndo</sender>
+   <signal>triggered()</signal>
+   <receiver>textEdit</receiver>
+   <slot>undo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>486</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

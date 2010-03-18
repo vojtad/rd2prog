@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/edit-copy.png</file>
+        <file>icons/edit-cut.png</file>
+        <file>icons/edit-delete.png</file>
+        <file>icons/edit-paste.png</file>
+        <file>icons/edit-redo.png</file>
+        <file>icons/edit-select-all.png</file>
+        <file>icons/edit-undo.png</file>
+        <file>icons/file-close.png</file>
+        <file>icons/file-new.png</file>
+        <file>icons/file-open-recent.png</file>
+        <file>icons/file-save-all.png</file>
+        <file>icons/file-save-as.png</file>
+        <file>icons/file-save.png</file>
+        <file>icons/file-open.png</file>
+        <file>icons/file-exit.png</file>
+        <file>icons/settings-serial-port-settings.png</file>
+        <file>icons/settings-select-font.png</file>
+        <file>icons/icon-cancel.png</file>
+        <file>icons/icon-ok.png</file>
+        <file>icons/settings-refresh.png</file>
+        <file>icons/information.png</file>
+        <file>icons/icon.png</file>
+    </qresource>
+</RCC>
