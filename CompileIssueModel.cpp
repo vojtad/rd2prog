@@ -56,7 +56,7 @@ QVariant CompileIssueModel::headerData(int section, Qt::Orientation orientation,
 
 QModelIndex CompileIssueModel::index(int row, int column, const QModelIndex & parent) const
 {
-	if(!parent.isValid() && row < m_issues->size() && row >= 0)
+	if(!parent.isValid() && m_issues != NULL && row < m_issues->size() && row >= 0)
 	{
 		return createIndex(row, column, (void *)(&m_issues->at(row)));
 	}
