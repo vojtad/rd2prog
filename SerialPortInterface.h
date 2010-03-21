@@ -64,18 +64,16 @@ class SerialPortInterface : public QIODevice
 		int m_fd;
 		struct termios m_termios;
 		QSocketNotifier * m_notifier;
-#elif defined(Q_OS_WIN)
-		HANDLE m_handle;
-		OVERLAPPED m_overlap;
-		COMMCONFIG m_commConfig;
-		COMMTIMEOUTS m_commTimeouts;
-		DWORD m_eventMask;
-		QWinEventNotifier * m_notifier;
-		QList<OVERLAPPED *> m_pendingWrites;
-		qint64 m_bytesToWrite;
-
-		private slots:
-			void onActivated(HANDLE);
+#elif (defined Q_OS_WIN)
+		HANDLE Win_Handle;
+		OVERLAPPED overlap;
+		COMMCONFIG Win_CommConfig;
+		COMMTIMEOUTS Win_CommTimeouts;
+		QWinEventNotifier *winEventNotifier;
+		DWORD eventMask;
+		QList<OVERLAPPED*> pendingWrites;
+		QReadWriteLock* bytesToWriteLock;
+		qint64 _bytesToWrite;
 #endif
 
 		private slots:

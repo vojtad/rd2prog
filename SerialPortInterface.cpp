@@ -213,9 +213,16 @@ SerialPortInterface::SerialPortInterface(const SerialPortSettings & settings, QO
 		QIODevice(parent),
 		m_settings(settings)
 {
+	Win_Handle=INVALID_HANDLE_VALUE;
+		ZeroMemory(&overlap, sizeof(OVERLAPPED));
+		overlap.hEvent = CreateEvent(NULL, true, false, NULL);
+		winEventNotifier = 0;
+		bytesToWriteLock = new QReadWriteLock;
+		_bytesToWrite = 0;
+
 	connect(this, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
 
-	m_bytesToWrite = 0;
+	/*m_bytesToWrite = 0;
 	m_handle = INVALID_HANDLE_VALUE;
 	ZeroMemory(&m_overlap, sizeof(OVERLAPPED));
 	m_overlap.hEvent = CreateEvent(NULL, true, false, NULL);
@@ -277,7 +284,7 @@ SerialPortInterface::SerialPortInterface(const SerialPortSettings & settings, QO
 	m_commTimeouts.ReadTotalTimeoutMultiplier = 0;
 	m_commTimeouts.ReadTotalTimeoutConstant = 0;
 	m_commTimeouts.WriteTotalTimeoutMultiplier = 0;
-	m_commTimeouts.WriteTotalTimeoutConstant = 0;
+	m_commTimeouts.WriteTotalTimeoutConstant = 0;*/ě
 }
 
 QStringList SerialPortInterface::getPorts()
@@ -360,90 +367,111 @@ QStringList SerialPortInterface::getPorts()
 
 bool SerialPortInterface::open(OpenMode mode)
 {
-	if(mode == QIODevice::NotOpen)
-		return isOpen();
+	unsigned long confSize = sizeof(COMMCONFIG);
+		Win_CommConfig.dwSize = confSize;
+		DWORD dwFlagsAndAttributes = 0;
+		//if (queryMode() == QextSerialPort::EventDriven)
+			dwFlagsAndAttributes += FILE_FLAG_OVERLAPPED;
 
-	if(!isOpen())
-	{
-		QString port = m_settings.m_name;
-		QRegExp regexp("^COM(\\d+)");
-		if(port.contains(regexp) && regexp.cap(1).toInt() > 9)
-			port.prepend("\\\\.\\");
+		QMutexLocker lock(mutex);
+		if (mode == QIODevice::NotOpen)
+			return isOpen();
+		if (!isOpen()) {
+			/*open the port*/
+			Win_Handle=CreateFileA(port.toAscii(), GENERIC_READ|GENERIC_WRITE,
+								  0, NULL, OPEN_EXISTING, dwFlagsAndAttributes, NULL);
+			if (Win_Handle!=INVALID_HANDLE_VALUE) {
+				QIODevice::open(mode);
+				/*configure port settings*/
+				GetCommConfig(Win_Handle, &Win_CommConfig, &confSize);
+				GetCommState(Win_Handle, &(Win_CommConfig.dcb));
 
-		WCHAR * w;
-		port.toWCharArray(w);
-		m_handle = CreateFile(w, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
-		if(m_handle != INVALID_HANDLE_VALUE)
-		{
-			QIODevice::open(mode);
+				/*set up parameters*/
+				Win_CommConfig.dcb.fBinary=TRUE;
+				Win_CommConfig.dcb.fInX=FALSE;
+				Win_CommConfig.dcb.fOutX=FALSE;
+				Win_CommConfig.dcb.fAbortOnError=FALSE;
+				Win_CommConfig.dcb.fNull=FALSE;
+				setBaudRate(Settings.BaudRate);
+				setDataBits(Settings.DataBits);
+				setStopBits(Settings.StopBits);
+				setParity(Settings.Parity);
+				setFlowControl(Settings.FlowControl);
+				setTimeout(Settings.Timeout_Millisec);
+				SetCommConfig(Win_Handle, &Win_CommConfig, sizeof(COMMCONFIG));
 
-			SetCommConfig(m_handle, &m_commConfig, sizeof(COMMCONFIG));
-			SetCommTimeouts(m_handle, &m_commTimeouts);
-			if(!SetCommMask(m_handle, EV_TXEMPTY | EV_RXCHAR));
-			{
-				qWarning() << "failed to set Comm Mask. Error code:", GetLastError();
-//				close();
-				return false;
+				//init event driven approach
+				//if (queryMode() == QextSerialPort::EventDriven) {
+					Win_CommTimeouts.ReadIntervalTimeout = MAXDWORD;
+					Win_CommTimeouts.ReadTotalTimeoutMultiplier = 0;
+					Win_CommTimeouts.ReadTotalTimeoutConstant = 0;
+					Win_CommTimeouts.WriteTotalTimeoutMultiplier = 0;
+					Win_CommTimeouts.WriteTotalTimeoutConstant = 0;
+					SetCommTimeouts(Win_Handle, &Win_CommTimeouts);
+					if (!SetCommMask( Win_Handle, EV_TXEMPTY | EV_RXCHAR | EV_DSR)) {
+						qWarning() << "failed to set Comm Mask. Error code:", GetLastError();
+						return false;
+					//}
+					winEventNotifier = new QWinEventNotifier(overlap.hEvent, this);
+					connect(winEventNotifier, SIGNAL(activated(HANDLE)), this, SLOT(onWinEvent(HANDLE)));
+					WaitCommEvent(Win_Handle, &eventMask, &overlap);
+				}
 			}
-
-			m_notifier = new QWinEventNotifier(m_overlap.hEvent, this);
-			connect(m_notifier, SIGNAL(activated(HANDLE)), this, SLOT(onActivated()));
-			WaitCommEvent(m_handle, &m_eventMask, &m_overlap);
+		} else {
+			return false;
 		}
-	}
-
-	return isOpen();
+		return isOpen();
 }
 
 void SerialPortInterface::close()
 {
-	if(isOpen())
-	{
-		FlushFileBuffers(m_handle);
-		QIODevice::close(); // mark ourselves as closed
-		CancelIo(m_handle);
-		CloseHandle(m_handle);
-		m_notifier->deleteLater();
+	QMutexLocker lock(mutex);
+		if (isOpen()) {
+			FlushFileBuffers(Win_Handle);
+			QIODevice::close(); // mark ourselves as closed
+			CancelIo(Win_Handle);
+			if (CloseHandle(Win_Handle))
+				Win_Handle = INVALID_HANDLE_VALUE;
+			if (winEventNotifier)
+				winEventNotifier->deleteLater();
 
-		m_bytesToWrite = 0;
+			_bytesToWrite = 0;
 
-		foreach(OVERLAPPED * o, m_pendingWrites)
-		{
-			CloseHandle(o->hEvent);
-			delete o;
+			foreach(OVERLAPPED* o, pendingWrites) {
+				CloseHandle(o->hEvent);
+				delete o;
+			}
+			pendingWrites.clear();
 		}
-		m_pendingWrites.clear();
-	}
 }
 
 qint64 SerialPortInterface::size() const
 {
-	COMSTAT comStat;
-	DWORD errorMask = 0;
-	ClearCommError(m_handle, &errorMask, &comStat);
-
-	return (qint64)comStat.cbInQue;
+	int availBytes;
+		COMSTAT Win_ComStat;
+		DWORD Win_ErrorMask=0;
+		ClearCommError(Win_Handle, &Win_ErrorMask, &Win_ComStat);
+		availBytes = Win_ComStat.cbInQue;
+		return (qint64)availBytes;
 }
 
 qint64 SerialPortInterface::bytesAvailable() const
 {
-	if (isOpen())
-	{
-		COMSTAT comStat;
-		DWORD errorMask;
-		if(ClearCommError(m_handle, &errorMask, &comStat))
-		{
-			return comStat.cbInQue + QIODevice::bytesAvailable();
+	QMutexLocker lock(mutex);
+	if (isOpen()) {
+		DWORD Errors;
+		COMSTAT Status;
+		if (ClearCommError(Win_Handle, &Errors, &Status)) {
+			return Status.cbInQue + QIODevice::bytesAvailable();
 		}
-
 		return (qint64)-1;
 	}
-
 	return 0;
 }
 
 void SerialPortInterface::setRTS(bool set)
 {
+	QMutexLocker lock(mutex);
 	if (isOpen())
 	{
 		EscapeCommFunction(m_handle, set ? SETRTS : CLRRTS);
@@ -452,6 +480,7 @@ void SerialPortInterface::setRTS(bool set)
 
 void SerialPortInterface::setDTR(bool set)
 {
+	QMutexLocker lock(mutex);
 	if (isOpen())
 	{
 		EscapeCommFunction(m_handle, set ? SETDTR : CLRDTR);
@@ -460,54 +489,49 @@ void SerialPortInterface::setDTR(bool set)
 
 qint64 SerialPortInterface::readData(char * data, qint64 maxSize)
 {
-	DWORD retVal = 0;
-
-	OVERLAPPED overlapRead;
-	ZeroMemory(&overlapRead, sizeof(OVERLAPPED));
-	if(!ReadFile(m_handle, (void *)data, (DWORD)maxSize, &retVal, &overlapRead))
-	{
-		if(GetLastError() == ERROR_IO_PENDING)
-			GetOverlappedResult(m_handle, &overlapRead, &retVal, true);
-		else
-		{
-			retVal = -1;
+	DWORD retVal;
+	QMutexLocker lock(mutex);
+	retVal = 0;
+		OVERLAPPED overlapRead;
+		ZeroMemory(&overlapRead, sizeof(OVERLAPPED));
+		if (!ReadFile(Win_Handle, (void*)data, (DWORD)maxSize, & retVal, & overlapRead)) {
+			if (GetLastError() == ERROR_IO_PENDING)
+				GetOverlappedResult(Win_Handle, & overlapRead, & retVal, true);
+			else {
+				lastErr = E_READ_FAILED;
+				retVal = (DWORD)-1;
+			}
 		}
-	}
-
 	return (qint64)retVal;
 }
 
 qint64 SerialPortInterface::writeData(const char * data, qint64 maxSize)
 {
+	QMutexLocker lock( mutex );
 	DWORD retVal = 0;
-
-	OVERLAPPED * newOverlapWrite = new OVERLAPPED;
-	ZeroMemory(newOverlapWrite, sizeof(OVERLAPPED));
-	newOverlapWrite->hEvent = CreateEvent(NULL, true, false, NULL);
-	if(WriteFile(m_handle, (void *)data, (DWORD)maxSize, &retVal, newOverlapWrite))
-	{
-		CloseHandle(newOverlapWrite->hEvent);
-		delete newOverlapWrite;
-	}
-	else if(GetLastError() == ERROR_IO_PENDING)
-	{
-		// writing asynchronously...not an error
-		m_bytesToWrite += maxSize;
-		m_pendingWrites.append(newOverlapWrite);
-	}
-	else
-	{
-		qDebug() << "serialport write error:" << GetLastError();
-		retVal = (DWORD)-1;
-		if(!CancelIo(newOverlapWrite->hEvent))
-			qDebug() << "serialport: couldn't cancel IO";
-
-		if(!CloseHandle(newOverlapWrite->hEvent))
-			qDebug() << "serialport: couldn't close OVERLAPPED handle";
-
-		delete newOverlapWrite;
-	}
-
+		OVERLAPPED* newOverlapWrite = new OVERLAPPED;
+		ZeroMemory(newOverlapWrite, sizeof(OVERLAPPED));
+		newOverlapWrite->hEvent = CreateEvent(NULL, true, false, NULL);
+		if (WriteFile(Win_Handle, (void*)data, (DWORD)maxSize, & retVal, newOverlapWrite)) {
+			CloseHandle(newOverlapWrite->hEvent);
+			delete newOverlapWrite;
+		}
+		else if (GetLastError() == ERROR_IO_PENDING) {
+			// writing asynchronously...not an error
+			QWriteLocker writelocker(bytesToWriteLock);
+			_bytesToWrite += maxSize;
+			pendingWrites.append(newOverlapWrite);
+		}
+		else {
+			qDebug() << "serialport write error:" << GetLastError();
+			lastErr = E_WRITE_FAILED;
+			retVal = (DWORD)-1;
+			if(!CancelIo(newOverlapWrite->hEvent))
+				qDebug() << "serialport: couldn't cancel IO";
+			if(!CloseHandle(newOverlapWrite->hEvent))
+				qDebug() << "serialport: couldn't close OVERLAPPED handle";
+			delete newOverlapWrite;
+		}
 	return (qint64)retVal;
 }
 
