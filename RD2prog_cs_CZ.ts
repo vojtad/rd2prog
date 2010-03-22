@@ -309,7 +309,7 @@
 <context>
     <name>SerialPortInterface</name>
     <message>
-        <location filename="SerialPortInterface.cpp" line="131"/>
+        <location filename="SerialPortInterface.cpp" line="134"/>
         <source>Cannot open port %1.</source>
         <translation>Port %1 nelze otevřít.</translation>
     </message>
