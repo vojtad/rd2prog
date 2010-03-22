@@ -9,7 +9,6 @@
 #include <QSocketNotifier>
 #elif defined(Q_OS_WIN)
 #include <windows.h>
-#include <QtCore/private/qwineventnotifier_p.h>
 #endif
 
 #include <QWaitCondition>
@@ -57,6 +56,7 @@ class SerialPortInterface : public QIODevice
 	private:
 		SerialPortSettings m_settings;
 		QWaitCondition m_readWaitCond;
+		QWaitCondition m_allWrittenCond;
 
 		void debugMessage(const QString & msg) const;
 
@@ -65,15 +65,8 @@ class SerialPortInterface : public QIODevice
 		struct termios m_termios;
 		QSocketNotifier * m_notifier;
 #elif (defined Q_OS_WIN)
-		HANDLE Win_Handle;
-		OVERLAPPED overlap;
-		COMMCONFIG Win_CommConfig;
-		COMMTIMEOUTS Win_CommTimeouts;
-		QWinEventNotifier *winEventNotifier;
-		DWORD eventMask;
-		QList<OVERLAPPED*> pendingWrites;
-		QReadWriteLock* bytesToWriteLock;
-		qint64 _bytesToWrite;
+		HANDLE m_handle;
+		COMMCONFIG m_commConfig;
 #endif
 
 		private slots:

@@ -604,7 +604,7 @@ void MainWindow::on_actionCompile_triggered()
 #if defined(Q_OS_LINUX)
 	QString p = QString("\"%1\" \"%2\" \"%3\" \"%4\"").arg(m_settingsDialog->assemblerPath(), asmPath, hexPath, lstPath);
 #elif defined(Q_OS_WIN)
-	QString p = QString("cmd /C \"%1\" %2 %3 %4").arg(m_settingsDialog->assemblerPath(), asmPath, hexPath, lstPath);
+	QString p = QString("cmd /C \"%1\" \"%2\" \"%3\" \"%4\"").arg(m_settingsDialog->assemblerPath(), asmPath, hexPath, lstPath);
 #endif
 
 	m_process.start(p, QIODevice::ReadOnly);

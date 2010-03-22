@@ -9,11 +9,11 @@ SettingsDialog::SettingsDialog(QWidget * parent) :
 {
 	if(!QFileInfo("G:\\profily\\").isDir())
 	{
-		m_settings =  new QSettings("QRD2", "QRD2", this);
+		m_settings =  new QSettings(this);
 	}
 	else
 	{
-		m_settings = new QSettings("G:\\profily\\QRD2\\qrd2.ini", QSettings::IniFormat, this);
+		m_settings = new QSettings("G:\\profily\\RD2prog\\settings.ini", QSettings::IniFormat, this);
 	}
 
 	ui.setupUi(this);

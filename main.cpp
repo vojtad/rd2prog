@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 
-	a.setOrganizationName("Drbohlav");
+	a.setOrganizationName("Vojta Drbohlav");
 	a.setApplicationName("RD2prog");
 	a.setApplicationVersion("1.0");
 

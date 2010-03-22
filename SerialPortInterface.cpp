@@ -213,78 +213,10 @@ SerialPortInterface::SerialPortInterface(const SerialPortSettings & settings, QO
 		QIODevice(parent),
 		m_settings(settings)
 {
-	Win_Handle=INVALID_HANDLE_VALUE;
-		ZeroMemory(&overlap, sizeof(OVERLAPPED));
-		overlap.hEvent = CreateEvent(NULL, true, false, NULL);
-		winEventNotifier = 0;
-		bytesToWriteLock = new QReadWriteLock;
-		_bytesToWrite = 0;
-
-	connect(this, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
-
-	/*m_bytesToWrite = 0;
 	m_handle = INVALID_HANDLE_VALUE;
-	ZeroMemory(&m_overlap, sizeof(OVERLAPPED));
-	m_overlap.hEvent = CreateEvent(NULL, true, false, NULL);
 
-	m_commConfig.dwSize = sizeof(COMMCONFIG);
-
-	m_commConfig.dcb.fBinary = TRUE;
-	m_commConfig.dcb.fInX = FALSE;
-	m_commConfig.dcb.fOutX = FALSE;
-	m_commConfig.dcb.fAbortOnError = FALSE;
-	m_commConfig.dcb.fNull = FALSE;
-
-	// no parity
-	m_commConfig.dcb.Parity = 0;
-	m_commConfig.dcb.fParity = FALSE;
-
-	// 8 data bits
-	m_commConfig.dcb.ByteSize = 8;
-
-	// 2 stop bits
-	m_commConfig.dcb.StopBits = 2;
-
-	// baudrate
-	switch(settings.m_baudrate)
-	{
-		case 110:
-			m_commConfig.dcb.BaudRate = CBR_110; break;
-		case 300:
-			m_commConfig.dcb.BaudRate = CBR_300; break;
-		case 600:
-			m_commConfig.dcb.BaudRate = CBR_600; break;
-		case 1200:
-			m_commConfig.dcb.BaudRate = CBR_1200; break;
-		case 2400:
-			m_commConfig.dcb.BaudRate = CBR_2400; break;
-		case 4800:
-			m_commConfig.dcb.BaudRate = CBR_4800; break;
-		case 9600:
-			m_commConfig.dcb.BaudRate = CBR_9600; break;
-		case 19200:
-			m_commConfig.dcb.BaudRate = CBR_19200; break;
-		case 38400:
-			m_commConfig.dcb.BaudRate = CBR_38400; break;
-		case 57600:
-			m_commConfig.dcb.BaudRate = CBR_57600; break;
-		case 115200:
-			m_commConfig.dcb.BaudRate = CBR_115200; break;
-		default: // toto by se nemelo stat
-			m_commConfig.dcb.BaudRate = CBR_9600; break;
-	}
-
-	// no flow control
-	m_commConfig.dcb.fOutxCtsFlow = FALSE;
-	m_commConfig.dcb.fRtsControl = RTS_CONTROL_DISABLE;
-	m_commConfig.dcb.fInX = FALSE;
-	m_commConfig.dcb.fOutX = FALSE;
-
-	m_commTimeouts.ReadIntervalTimeout = MAXDWORD;
-	m_commTimeouts.ReadTotalTimeoutMultiplier = 0;
-	m_commTimeouts.ReadTotalTimeoutConstant = 0;
-	m_commTimeouts.WriteTotalTimeoutMultiplier = 0;
-	m_commTimeouts.WriteTotalTimeoutConstant = 0;*/ě
+	//connect(this, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
+	//connect(this, SIGNAL(bytesWritten(qint64)), this, SLOT(slotBytesWritten(qint64)));
 }
 
 QStringList SerialPortInterface::getPorts()
@@ -368,110 +300,131 @@ QStringList SerialPortInterface::getPorts()
 bool SerialPortInterface::open(OpenMode mode)
 {
 	unsigned long confSize = sizeof(COMMCONFIG);
-		Win_CommConfig.dwSize = confSize;
-		DWORD dwFlagsAndAttributes = 0;
-		//if (queryMode() == QextSerialPort::EventDriven)
-			dwFlagsAndAttributes += FILE_FLAG_OVERLAPPED;
+	m_commConfig.dwSize = confSize;
 
-		QMutexLocker lock(mutex);
-		if (mode == QIODevice::NotOpen)
-			return isOpen();
-		if (!isOpen()) {
-			/*open the port*/
-			Win_Handle=CreateFileA(port.toAscii(), GENERIC_READ|GENERIC_WRITE,
-								  0, NULL, OPEN_EXISTING, dwFlagsAndAttributes, NULL);
-			if (Win_Handle!=INVALID_HANDLE_VALUE) {
-				QIODevice::open(mode);
-				/*configure port settings*/
-				GetCommConfig(Win_Handle, &Win_CommConfig, &confSize);
-				GetCommState(Win_Handle, &(Win_CommConfig.dcb));
+	if (mode == QIODevice::NotOpen)
+		return isOpen();
 
-				/*set up parameters*/
-				Win_CommConfig.dcb.fBinary=TRUE;
-				Win_CommConfig.dcb.fInX=FALSE;
-				Win_CommConfig.dcb.fOutX=FALSE;
-				Win_CommConfig.dcb.fAbortOnError=FALSE;
-				Win_CommConfig.dcb.fNull=FALSE;
-				setBaudRate(Settings.BaudRate);
-				setDataBits(Settings.DataBits);
-				setStopBits(Settings.StopBits);
-				setParity(Settings.Parity);
-				setFlowControl(Settings.FlowControl);
-				setTimeout(Settings.Timeout_Millisec);
-				SetCommConfig(Win_Handle, &Win_CommConfig, sizeof(COMMCONFIG));
+	if (!isOpen())
+	{
+		/*open the port*/
+		QString port = m_settings.m_name;
+		QRegExp regexp("^COM(\\d+)");
+		if(port.contains(regexp) && regexp.cap(1).toInt() > 9)
+			port.prepend("\\\\.\\");
 
-				//init event driven approach
-				//if (queryMode() == QextSerialPort::EventDriven) {
-					Win_CommTimeouts.ReadIntervalTimeout = MAXDWORD;
-					Win_CommTimeouts.ReadTotalTimeoutMultiplier = 0;
-					Win_CommTimeouts.ReadTotalTimeoutConstant = 0;
-					Win_CommTimeouts.WriteTotalTimeoutMultiplier = 0;
-					Win_CommTimeouts.WriteTotalTimeoutConstant = 0;
-					SetCommTimeouts(Win_Handle, &Win_CommTimeouts);
-					if (!SetCommMask( Win_Handle, EV_TXEMPTY | EV_RXCHAR | EV_DSR)) {
-						qWarning() << "failed to set Comm Mask. Error code:", GetLastError();
-						return false;
-					//}
-					winEventNotifier = new QWinEventNotifier(overlap.hEvent, this);
-					connect(winEventNotifier, SIGNAL(activated(HANDLE)), this, SLOT(onWinEvent(HANDLE)));
-					WaitCommEvent(Win_Handle, &eventMask, &overlap);
-				}
+		m_handle = CreateFileA(port.toAscii(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, NULL, NULL);
+		if(m_handle != INVALID_HANDLE_VALUE)
+		{
+			qDebug() << port;
+			QIODevice::open(mode);
+
+			/*configure port settings*/
+			GetCommConfig(m_handle, &m_commConfig, &confSize);
+			GetCommState(m_handle, &(m_commConfig.dcb));
+
+			/*set up parameters*/
+			m_commConfig.dcb.fBinary = TRUE;
+			m_commConfig.dcb.fInX = FALSE;
+			m_commConfig.dcb.fOutX = FALSE;
+			m_commConfig.dcb.fAbortOnError = FALSE;
+			m_commConfig.dcb.fNull = FALSE;
+
+			// no parity
+			m_commConfig.dcb.Parity = 0;
+			m_commConfig.dcb.fParity = FALSE;
+
+			// 8 data bits
+			m_commConfig.dcb.ByteSize = 8;
+
+			// 2 stop bits
+			m_commConfig.dcb.StopBits = 2;
+
+			// baudrate
+			switch(m_settings.m_baudrate)
+			{
+				case 110:
+					m_commConfig.dcb.BaudRate = CBR_110; break;
+				case 300:
+					m_commConfig.dcb.BaudRate = CBR_300; break;
+				case 600:
+					m_commConfig.dcb.BaudRate = CBR_600; break;
+				case 1200:
+					m_commConfig.dcb.BaudRate = CBR_1200; break;
+				case 2400:
+					m_commConfig.dcb.BaudRate = CBR_2400; break;
+				case 4800:
+					m_commConfig.dcb.BaudRate = CBR_4800; break;
+				case 9600:
+					m_commConfig.dcb.BaudRate = CBR_9600; break;
+				case 19200:
+					m_commConfig.dcb.BaudRate = CBR_19200; break;
+				case 38400:
+					m_commConfig.dcb.BaudRate = CBR_38400; break;
+				case 57600:
+					m_commConfig.dcb.BaudRate = CBR_57600; break;
+				case 115200:
+					m_commConfig.dcb.BaudRate = CBR_115200; break;
+				default: // toto by se nemelo stat
+					m_commConfig.dcb.BaudRate = CBR_9600; break;
 			}
-		} else {
+
+			// no flow control
+			m_commConfig.dcb.fOutxCtsFlow = FALSE;
+			m_commConfig.dcb.fRtsControl = RTS_CONTROL_DISABLE;
+			m_commConfig.dcb.fInX = FALSE;
+			m_commConfig.dcb.fOutX = FALSE;
+
+			SetCommConfig(m_handle, &m_commConfig, sizeof(COMMCONFIG));
+		}
+		else
+		{
 			return false;
 		}
-		return isOpen();
+	}
+
+	return isOpen();
 }
 
 void SerialPortInterface::close()
 {
-	QMutexLocker lock(mutex);
-		if (isOpen()) {
-			FlushFileBuffers(Win_Handle);
-			QIODevice::close(); // mark ourselves as closed
-			CancelIo(Win_Handle);
-			if (CloseHandle(Win_Handle))
-				Win_Handle = INVALID_HANDLE_VALUE;
-			if (winEventNotifier)
-				winEventNotifier->deleteLater();
+	if (isOpen())
+	{
+		FlushFileBuffers(m_handle);
+		QIODevice::close(); // mark ourselves as closed
+		CancelIo(m_handle);
 
-			_bytesToWrite = 0;
-
-			foreach(OVERLAPPED* o, pendingWrites) {
-				CloseHandle(o->hEvent);
-				delete o;
-			}
-			pendingWrites.clear();
-		}
+		if(CloseHandle(m_handle))
+			m_handle = INVALID_HANDLE_VALUE;
+	}
 }
 
 qint64 SerialPortInterface::size() const
 {
-	int availBytes;
-		COMSTAT Win_ComStat;
-		DWORD Win_ErrorMask=0;
-		ClearCommError(Win_Handle, &Win_ErrorMask, &Win_ComStat);
-		availBytes = Win_ComStat.cbInQue;
-		return (qint64)availBytes;
+	COMSTAT Win_ComStat;
+	DWORD Win_ErrorMask = 0;
+	ClearCommError(m_handle, &Win_ErrorMask, &Win_ComStat);
+
+	return (qint64)Win_ComStat.cbInQue;
 }
 
 qint64 SerialPortInterface::bytesAvailable() const
 {
-	QMutexLocker lock(mutex);
-	if (isOpen()) {
-		DWORD Errors;
-		COMSTAT Status;
-		if (ClearCommError(Win_Handle, &Errors, &Status)) {
-			return Status.cbInQue + QIODevice::bytesAvailable();
-		}
+	if (isOpen())
+	{
+		COMSTAT Win_ComStat;
+		DWORD Win_ErrorMask = 0;
+		if(ClearCommError(m_handle, &Win_ErrorMask, &Win_ComStat))
+			return Win_ComStat.cbInQue + QIODevice::bytesAvailable();
+
 		return (qint64)-1;
 	}
+
 	return 0;
 }
 
 void SerialPortInterface::setRTS(bool set)
 {
-	QMutexLocker lock(mutex);
 	if (isOpen())
 	{
 		EscapeCommFunction(m_handle, set ? SETRTS : CLRRTS);
@@ -480,7 +433,6 @@ void SerialPortInterface::setRTS(bool set)
 
 void SerialPortInterface::setDTR(bool set)
 {
-	QMutexLocker lock(mutex);
 	if (isOpen())
 	{
 		EscapeCommFunction(m_handle, set ? SETDTR : CLRDTR);
@@ -489,103 +441,16 @@ void SerialPortInterface::setDTR(bool set)
 
 qint64 SerialPortInterface::readData(char * data, qint64 maxSize)
 {
-	DWORD retVal;
-	QMutexLocker lock(mutex);
-	retVal = 0;
-		OVERLAPPED overlapRead;
-		ZeroMemory(&overlapRead, sizeof(OVERLAPPED));
-		if (!ReadFile(Win_Handle, (void*)data, (DWORD)maxSize, & retVal, & overlapRead)) {
-			if (GetLastError() == ERROR_IO_PENDING)
-				GetOverlappedResult(Win_Handle, & overlapRead, & retVal, true);
-			else {
-				lastErr = E_READ_FAILED;
-				retVal = (DWORD)-1;
-			}
-		}
-	return (qint64)retVal;
+	DWORD retVal = 0;
+	ReadFile(m_handle, (void*)data, (DWORD)maxSize, &retVal, NULL);
+	return qint64(retVal);
 }
 
 qint64 SerialPortInterface::writeData(const char * data, qint64 maxSize)
 {
-	QMutexLocker lock( mutex );
 	DWORD retVal = 0;
-		OVERLAPPED* newOverlapWrite = new OVERLAPPED;
-		ZeroMemory(newOverlapWrite, sizeof(OVERLAPPED));
-		newOverlapWrite->hEvent = CreateEvent(NULL, true, false, NULL);
-		if (WriteFile(Win_Handle, (void*)data, (DWORD)maxSize, & retVal, newOverlapWrite)) {
-			CloseHandle(newOverlapWrite->hEvent);
-			delete newOverlapWrite;
-		}
-		else if (GetLastError() == ERROR_IO_PENDING) {
-			// writing asynchronously...not an error
-			QWriteLocker writelocker(bytesToWriteLock);
-			_bytesToWrite += maxSize;
-			pendingWrites.append(newOverlapWrite);
-		}
-		else {
-			qDebug() << "serialport write error:" << GetLastError();
-			lastErr = E_WRITE_FAILED;
-			retVal = (DWORD)-1;
-			if(!CancelIo(newOverlapWrite->hEvent))
-				qDebug() << "serialport: couldn't cancel IO";
-			if(!CloseHandle(newOverlapWrite->hEvent))
-				qDebug() << "serialport: couldn't close OVERLAPPED handle";
-			delete newOverlapWrite;
-		}
-	return (qint64)retVal;
-}
-
-void SerialPortInterface::onActivated(HANDLE h)
-{
-	if(h == m_overlap.hEvent)
-	{
-		if(m_eventMask & EV_RXCHAR)
-		{
-			if (sender() != this && bytesAvailable() > 0)
-				emit readyRead();
-		}
-
-		if(m_eventMask & EV_TXEMPTY)
-		{
-			/*
-			 * A write completed.  Run through the list of OVERLAPPED writes, and if
-			 * they completed successfully, take them off the list and delete them.
-			 * Otherwise, leave them on there so they can finish.
-			 */
-			qint64 totalBytesWritten = 0;
-			QList<OVERLAPPED *> overlapsToDelete;
-			foreach(OVERLAPPED * o, m_pendingWrites)
-			{
-				DWORD numBytes = 0;
-				if(GetOverlappedResult(m_handle, o, &numBytes, false))
-				{
-					overlapsToDelete.append(o);
-					totalBytesWritten += numBytes;
-				}
-				else if(GetLastError() != ERROR_IO_INCOMPLETE)
-				{
-					overlapsToDelete.append(o);
-					qWarning() << "CommEvent overlapped write error:" << GetLastError();
-				}
-			}
-
-			if (sender() != this && totalBytesWritten > 0)
-			{
-				//QWriteLocker writelocker(bytesToWriteLock);
-				emit bytesWritten(totalBytesWritten);
-				m_bytesToWrite = 0;
-			}
-
-			while(!overlapsToDelete.empty())
-			{
-				OVERLAPPED * o = overlapsToDelete.takeLast();
-				CloseHandle(o->hEvent);
-				delete o;
-			}
-		}
-
-		WaitCommEvent(m_handle, &m_eventMask, &m_overlap);
-	}
+	WriteFile(m_handle, (void*)data, (DWORD)maxSize, &retVal, NULL);
+	return qint64(retVal);
 }
 
 #else
@@ -609,9 +474,10 @@ void SerialPortInterface::debugMessage(const QString & msg) const
 
 bool SerialPortInterface::waitForReadyRead(int msecs)
 {
-//	usleep(1000);
 
 	QMutex mutex;
+
+#if defined(Q_OS_LINUX)
 	QMutexLocker locker(&mutex);
 
 	if(bytesAvailable() == 0 && !m_readWaitCond.wait(&mutex, msecs))
@@ -620,6 +486,18 @@ bool SerialPortInterface::waitForReadyRead(int msecs)
 	}
 
 	return true;
+#elif defined(Q_OS_WIN32)
+	for(int i = 0; i < msecs; ++i)
+	{
+		if(bytesAvailable() > 0)
+			return true;
+
+		QMutexLocker locker(&mutex);
+		m_readWaitCond.wait(&mutex, 1);
+	}
+
+	return false;
+#endif
 }
 
 bool SerialPortInterface::waitForReadyRead(int msecs, int bytes)
