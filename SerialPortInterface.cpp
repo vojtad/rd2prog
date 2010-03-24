@@ -441,6 +441,7 @@ void SerialPortInterface::setDTR(bool set)
 
 qint64 SerialPortInterface::readData(char * data, qint64 maxSize)
 {
+	qDebug() << maxSize;
 	DWORD retVal = 0;
 	ReadFile(m_handle, (void*)data, (DWORD)maxSize, &retVal, NULL);
 	return qint64(retVal);
@@ -479,6 +480,8 @@ bool SerialPortInterface::waitForReadyRead(int msecs)
 
 #if defined(Q_OS_LINUX)
 	QMutexLocker locker(&mutex);
+
+	usleep(2000);
 
 	if(bytesAvailable() == 0 && !m_readWaitCond.wait(&mutex, msecs))
 	{

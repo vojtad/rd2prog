@@ -134,7 +134,7 @@ WriteDialog::WriteDialog(const SerialPortSettings & settings, const QList<QByteA
 	connect(&m_thread, SIGNAL(setProgress(int)), ui.progressBar, SLOT(setValue(int)));
 	connect(&m_thread, SIGNAL(terminated()), this, SLOT(aborted()));
 
-	if(!m_serialPortInterface.open(QIODevice::ReadWrite))
+	if(!m_serialPortInterface.open(QIODevice::ReadWrite | QIODevice::Unbuffered))
 	{
 		done(0);
 		return;

@@ -84,7 +84,7 @@ void SettingsDialog::checkPort()
 		return;
 
 	SerialPortInterface spi(m_portSettings, this);
-	if(spi.open(QIODevice::ReadWrite))
+	if(spi.open(QIODevice::ReadWrite | QIODevice::Unbuffered))
 	{
 		ui.labelAvailIcon->setPixmap(QPixmap(":/icons/icon-ok.png"));
 		ui.labelAvailText->setText(QString(tr("%1 is available")).arg(m_portSettings.m_name));
