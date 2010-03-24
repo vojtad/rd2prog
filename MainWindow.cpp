@@ -551,6 +551,23 @@ void MainWindow::on_actionClear_recent_files_triggered()
 
 void MainWindow::on_actionCompile_triggered()
 {
+	if(!QFileInfo(m_settingsDialog->assemblerPath()).exists())
+	{
+		currentFile()->m_compileIssues.clear();
+		ui.textEdit->clearHighlightedLines();
+
+		currentFile()->m_compileIssues.push_back(CompileIssue(-1, tr("Assembler wasn't found. You can change its path in Settings.")));
+
+		m_compileIssueModel.setNewData(currentFile()->m_compileIssues);
+
+		ui.treeViewCompileIssues->resizeColumnToContents(0);
+		ui.treeViewCompileIssues->resizeColumnToContents(1);
+		ui.treeViewCompileIssues->resizeColumnToContents(2);
+
+		ui.textEdit->highlightLines();
+		return;
+	}
+
 	bool temp = false;
 	QString path = currentFile()->fullPath();
 	QString asmPath = currentFile()->fullPath();

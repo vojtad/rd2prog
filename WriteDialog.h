@@ -10,9 +10,9 @@
 class WriteThread : public SynchronizationThread
 {
 	public:
-		WriteThread(SerialPortInterface * spi, QWaitCondition * waitCondition, const QList<QByteArray> & data);
+		WriteThread(SerialPortInterface * spi, const QList<QByteArray> & data);
 
-		bool m_setBLJB;
+		bool m_setBSB;
 
 	private:
 		int m_sent;
@@ -35,10 +35,7 @@ class WriteDialog : public QDialog
 	private:
 		Ui::WriteDialog ui;
 
-		//QList<QByteArray> m_data;
-		QWaitCondition m_waitCondition;
 		SerialPortInterface m_serialPortInterface;
-		//bool m_success;
 		WriteThread m_thread;
 		QListWidgetItem * m_currentItem;
 

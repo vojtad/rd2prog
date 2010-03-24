@@ -6,9 +6,9 @@
 #include <QScrollBar>
 #include <QDebug>
 
-WriteThread::WriteThread(SerialPortInterface * spi, QWaitCondition * waitCondition, const QList<QByteArray> & data) :
-		SynchronizationThread(spi, waitCondition),
-		m_setBLJB(false),
+WriteThread::WriteThread(SerialPortInterface * spi, const QList<QByteArray> & data) :
+		SynchronizationThread(spi),
+		m_setBSB(false),
 		m_data(data)
 {
 }
@@ -44,9 +44,9 @@ void WriteThread::myRun()
 		}
 	}
 
-	if(m_setBLJB)
+	if(m_setBSB)
 	{
-		emit message(SETTING_BLJB);
+		emit message(SETTING_BSB);
 
 		ISP::ISPFrame frame(ISP::WriteFunction, ISP::WriteFunctionArgument::ProgramBSB);
 		frame.appendDataByte(0);
@@ -69,7 +69,7 @@ void WriteThread::myRun()
 			return;
 		}
 		else
-			emit message(SETTING_BLJB_DONE);
+			emit message(SETTING_BSB_DONE);
 	}
 
 	emit message(WRITING_OK);
@@ -124,7 +124,7 @@ int WriteThread::writeByteArray(const QByteArray & array)
 WriteDialog::WriteDialog(const SerialPortSettings & settings, const QList<QByteArray> & data, QWidget * parent) :
 	QDialog(parent),
 	m_serialPortInterface(settings, this),
-	m_thread(&m_serialPortInterface, &m_waitCondition, data)
+	m_thread(&m_serialPortInterface, data)
 {
 	ui.setupUi(this);
 
@@ -184,15 +184,14 @@ void WriteDialog::on_actionEnter_triggered()
 		ui.labelSyncStatus->setText(QString());
 		ui.labelWritingStatus->setText(QString());
 
-		ui.checkBoxBLJB->setEnabled(false);
+		ui.checkBoxBSB->setEnabled(false);
 
 		ui.progressBar->setValue(0);
 
 		ui.pushButton->setText(tr("Abort"));
 		ui.pushButtonClose->setEnabled(false);
 
-		m_thread.m_setBLJB = ui.checkBoxBLJB->isChecked();
-
+		m_thread.m_setBSB = ui.checkBoxBSB->isChecked();
 		m_thread.start();
 	}
 	else
@@ -251,11 +250,11 @@ void WriteDialog::onMessage(int m)
 			ui.listWidget->addItem(tr("Reset microprocessor to run your program."));
 			writingOk();
 		} break;
-		case SETTING_BLJB:
+		case SETTING_BSB:
 		{
 			ui.listWidget->addItem(tr("Writing BSB byte:"));
 		} break;
-		case SETTING_BLJB_DONE:
+		case SETTING_BSB_DONE:
 		{
 			ui.listWidget->addItem(tr("BSB byte was successfully set to 00h."));
 		} break;
@@ -343,7 +342,7 @@ void WriteDialog::aborted()
 	ui.labelSyncStatus->setText(QString());
 	ui.labelWritingStatus->setText(QString());
 
-	ui.checkBoxBLJB->setEnabled(true);
+	ui.checkBoxBSB->setEnabled(true);
 
 	ui.progressBar->setValue(0);
 
@@ -366,7 +365,9 @@ void WriteDialog::printBytes(const QByteArray & bytes)
 void WriteDialog::done(int r)
 {
 	if(m_thread.isRunning())
+	{
 		m_thread.terminate();
+	}
 
 	if(m_serialPortInterface.isOpen())
 	{

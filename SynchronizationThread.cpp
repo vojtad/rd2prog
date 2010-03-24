@@ -1,9 +1,8 @@
 #include "SynchronizationThread.h"
 
-SynchronizationThread::SynchronizationThread(SerialPortInterface * spi, QWaitCondition * waitCondition)
+SynchronizationThread::SynchronizationThread(SerialPortInterface * spi)
 {
 	m_serialPortInterface = spi;
-	m_waitCondition = waitCondition;
 }
 
 SerialPortInterface * SynchronizationThread::serialPortInterface()

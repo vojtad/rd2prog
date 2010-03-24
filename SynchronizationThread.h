@@ -18,8 +18,8 @@ enum Messages
 	WRITING_CANNOT_WRITE_TO_PORT,
 	WRITING_CHECKSUM_ERROR,
 	WRITING_SECURITY_ERROR,
-	SETTING_BLJB,
-	SETTING_BLJB_DONE,
+	SETTING_BSB,
+	SETTING_BSB_DONE,
 };
 
 class SynchronizationThread : public QThread
@@ -27,7 +27,7 @@ class SynchronizationThread : public QThread
 	Q_OBJECT
 
 	public:
-		SynchronizationThread(SerialPortInterface * spi, QWaitCondition * waitCondition);
+		SynchronizationThread(SerialPortInterface * spi);
 
 		SerialPortInterface * serialPortInterface();
 
@@ -35,8 +35,6 @@ class SynchronizationThread : public QThread
 		bool m_synchronized;
 		bool m_result;
 		SerialPortInterface * m_serialPortInterface;
-		QMutex m_mutex;
-		QWaitCondition * m_waitCondition;
 
 		virtual void myRun() = 0;
 

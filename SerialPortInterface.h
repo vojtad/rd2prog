@@ -11,6 +11,7 @@
 #include <windows.h>
 #endif
 
+#include <QMutex>
 #include <QWaitCondition>
 
 struct SerialPortSettings
@@ -55,22 +56,17 @@ class SerialPortInterface : public QIODevice
 
 	private:
 		SerialPortSettings m_settings;
-		QWaitCondition m_readWaitCond;
-		QWaitCondition m_allWrittenCond;
+		bool m_forceClose;
 
 		void debugMessage(const QString & msg) const;
 
 #if defined(Q_OS_LINUX)
 		int m_fd;
 		struct termios m_termios;
-		QSocketNotifier * m_notifier;
 #elif (defined Q_OS_WIN)
 		HANDLE m_handle;
 		COMMCONFIG m_commConfig;
 #endif
-
-		private slots:
-			void slotReadyRead();
 };
 
 #endif // SERIALPORTINTERFACE_H

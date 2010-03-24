@@ -161,7 +161,7 @@
     </widget>
    </item>
    <item row="2" column="0" colspan="2">
-    <widget class="QCheckBox" name="checkBoxBLJB">
+    <widget class="QCheckBox" name="checkBoxBSB">
      <property name="text">
       <string>Write 00h to BSB (use on first write)</string>
      </property>

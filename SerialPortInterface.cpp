@@ -1,7 +1,7 @@
 #include "SerialPortInterface.h"
 
 #include <QDebug>
-#include <QMutex>
+#include <QThread>
 
 #if defined(Q_OS_LINUX)
 
@@ -19,11 +19,10 @@ extern "C"
 
 SerialPortInterface::SerialPortInterface(const SerialPortSettings & settings, QObject * parent) :
 		QIODevice(parent),
-		m_settings(settings)
+		m_settings(settings),
+		m_forceClose(false)
 {
 	m_fd = -1;
-
-	connect(this, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
 
 	int B = 0;
 	switch(settings.m_baudrate)
@@ -115,7 +114,6 @@ bool SerialPortInterface::open(OpenMode mode)
 		m_fd = ::open(m_settings.m_name.toAscii(), O_RDWR | O_NOCTTY | O_NDELAY);
 		if(m_fd != -1)
 		{
-
 			setOpenMode(mode);
 			cfmakeraw(&m_termios);
 			m_termios.c_cflag |= CREAD | CLOCAL;
@@ -125,9 +123,6 @@ bool SerialPortInterface::open(OpenMode mode)
 			m_termios.c_cc[VMIN]= 0;
 
 			tcsetattr(m_fd, TCSAFLUSH, &m_termios);
-
-			m_notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
-			connect(m_notifier, SIGNAL(activated(int)), this, SIGNAL(readyRead()));
 		}
 		else
 		{
@@ -142,9 +137,10 @@ void SerialPortInterface::close()
 {
 	if(isOpen())
 	{
+		m_forceClose = true;
+
 		tcflush(m_fd, TCIOFLUSH);
 		::close(m_fd);
-		m_notifier->deleteLater();
 		QIODevice::close();
 	}
 }
@@ -211,12 +207,10 @@ qint64 SerialPortInterface::writeData(const char * data, qint64 maxSize)
 
 SerialPortInterface::SerialPortInterface(const SerialPortSettings & settings, QObject * parent) :
 		QIODevice(parent),
-		m_settings(settings)
+		m_settings(settings),
+		m_forceClose(false)
 {
 	m_handle = INVALID_HANDLE_VALUE;
-
-	//connect(this, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
-	//connect(this, SIGNAL(bytesWritten(qint64)), this, SLOT(slotBytesWritten(qint64)));
 }
 
 QStringList SerialPortInterface::getPorts()
@@ -390,6 +384,8 @@ void SerialPortInterface::close()
 {
 	if (isOpen())
 	{
+		m_forceClose = true;
+
 		FlushFileBuffers(m_handle);
 		QIODevice::close(); // mark ourselves as closed
 		CancelIo(m_handle);
@@ -475,48 +471,36 @@ void SerialPortInterface::debugMessage(const QString & msg) const
 
 bool SerialPortInterface::waitForReadyRead(int msecs)
 {
-
-	QMutex mutex;
-
-#if defined(Q_OS_LINUX)
-	QMutexLocker locker(&mutex);
-
-	usleep(2000);
-
-	if(bytesAvailable() == 0 && !m_readWaitCond.wait(&mutex, msecs))
-	{
-		return false;
-	}
-
-	return true;
-#elif defined(Q_OS_WIN32)
 	for(int i = 0; i < msecs; ++i)
 	{
+		if(m_forceClose)
+			return false;
+
 		if(bytesAvailable() > 0)
 			return true;
 
-		QMutexLocker locker(&mutex);
-		m_readWaitCond.wait(&mutex, 1);
+#ifdef Q_OS_WIN
+		Sleep(1);
+#else
+		usleep(1000);
+#endif
+
+		if(m_forceClose)
+			return false;
 	}
 
 	return false;
-#endif
 }
 
 bool SerialPortInterface::waitForReadyRead(int msecs, int bytes)
 {
 	while(bytesAvailable() < bytes)
 	{
-		if(!waitForReadyRead(msecs))
+		if(m_forceClose || !waitForReadyRead(msecs))
 			return false;
 	}
 
 	return true;
-}
-
-void SerialPortInterface::slotReadyRead()
-{
-	m_readWaitCond.wakeAll();
 }
 
 SerialPortInterface::~SerialPortInterface()

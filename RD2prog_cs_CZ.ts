@@ -242,23 +242,28 @@
         <translation>Žádné naposledy otevřené soubory</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="655"/>
-        <location filename="MainWindow.cpp" line="707"/>
+        <location filename="MainWindow.cpp" line="559"/>
+        <source>Assembler wasn&apos;t found. You can change its path in Settings.</source>
+        <translation>Assembler nebyl nalezen. Jeho umístění můžete změnit v Nastavení.</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="672"/>
+        <location filename="MainWindow.cpp" line="724"/>
         <source>Listing file: %1</source>
         <translation>Soubor listing: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="660"/>
+        <location filename="MainWindow.cpp" line="677"/>
         <source>Cannot open Listing file</source>
         <translation>Nelze otevřít soubor Listing</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="661"/>
+        <location filename="MainWindow.cpp" line="678"/>
         <source>Listing file doesn&apos;t exist. You have to Compile source code at first.</source>
         <translation>Soubor Listing neexistuje. Musíte nejdřív zkompilovat zdrojový kód.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="781"/>
+        <location filename="MainWindow.cpp" line="798"/>
         <source>RD2prog - full chip erase</source>
         <translation>RD2prog - vymazat celý mikroprocesor</translation>
     </message>
@@ -267,33 +272,33 @@
         <translation type="obsolete">Nelze otevřít soubor listing (%1)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="700"/>
+        <location filename="MainWindow.cpp" line="717"/>
         <source>No errors found. Compiled successfully.</source>
         <translation>Nebyly nalezeny žádné chyby. Kompilace proběhla úspěšně.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="704"/>
+        <location filename="MainWindow.cpp" line="721"/>
         <source>%1 errors found.</source>
         <translation>Nalezeno %1 chyb.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="708"/>
-        <location filename="MainWindow.cpp" line="736"/>
+        <location filename="MainWindow.cpp" line="725"/>
+        <location filename="MainWindow.cpp" line="753"/>
         <source>HEX file: %1</source>
         <translation>Soubor HEX: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="712"/>
+        <location filename="MainWindow.cpp" line="729"/>
         <source>Cannot open listing file: %1</source>
         <translation>Nelze otevřít soubor listing: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="741"/>
+        <location filename="MainWindow.cpp" line="758"/>
         <source>Cannot open HEX file</source>
         <translation>Nelze otevřít soubor HEX</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="742"/>
+        <location filename="MainWindow.cpp" line="759"/>
         <source>HEX file doesn&apos;t exist. You have to Compile source code at first.</source>
         <translation>Soubor HEX neexistuje. Musíte nejdřív zkompilovat zdrojový kód.</translation>
     </message>
@@ -309,7 +314,7 @@
 <context>
     <name>SerialPortInterface</name>
     <message>
-        <location filename="SerialPortInterface.cpp" line="134"/>
+        <location filename="SerialPortInterface.cpp" line="129"/>
         <source>Cannot open port %1.</source>
         <translation>Port %1 nelze otevřít.</translation>
     </message>
@@ -420,20 +425,20 @@
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="210"/>
+        <location filename="WriteDialog.cpp" line="209"/>
         <source>Synchronization of microprocessor and PC:</source>
         <translation>Synchronizace mikroprocesorového systému a PC:</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="215"/>
+        <location filename="WriteDialog.cpp" line="214"/>
         <source>Synchronization failed.</source>
         <translation>Synchronizace selhala.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="216"/>
-        <location filename="WriteDialog.cpp" line="230"/>
-        <location filename="WriteDialog.cpp" line="241"/>
-        <location filename="WriteDialog.cpp" line="332"/>
+        <location filename="WriteDialog.cpp" line="215"/>
+        <location filename="WriteDialog.cpp" line="229"/>
+        <location filename="WriteDialog.cpp" line="240"/>
+        <location filename="WriteDialog.cpp" line="331"/>
         <source>Click on Retry to write again.</source>
         <translation>Stiskněte Znovu pro nový zápis.</translation>
     </message>
@@ -442,76 +447,76 @@
         <translation type="obsolete">Zápis programu:</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="225"/>
+        <location filename="WriteDialog.cpp" line="224"/>
         <source>Writing:</source>
         <translation>Zápis:</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="229"/>
+        <location filename="WriteDialog.cpp" line="228"/>
         <source>Writing failed.</source>
         <translation>Zápis selhal.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="235"/>
+        <location filename="WriteDialog.cpp" line="234"/>
         <source>Security error.</source>
         <translation>Chyba zabezpečení mikroprocesoru.\nPro odstranění spusťte vymazání celého mikroprocesoru.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="240"/>
+        <location filename="WriteDialog.cpp" line="239"/>
         <source>Cannot write to serial port.</source>
         <translation>Není možné zapisovat na sériový port.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="246"/>
+        <location filename="WriteDialog.cpp" line="245"/>
         <source>Checksum error. Sending again.</source>
         <translation>Chyba v kontrolním součtu. Odesílám znovu.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="250"/>
+        <location filename="WriteDialog.cpp" line="249"/>
         <source>Writing done.</source>
         <translation>Zápis dokončen.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="251"/>
+        <location filename="WriteDialog.cpp" line="250"/>
         <source>Reset microprocessor to run your program.</source>
         <translation>Resetujte mikroprocesor pro spuštění zapsaného programu.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="256"/>
+        <location filename="WriteDialog.cpp" line="255"/>
         <source>Writing BSB byte:</source>
         <translation>Zápis BSB bytu:</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="260"/>
+        <location filename="WriteDialog.cpp" line="259"/>
         <source>BSB byte was successfully set to 00h.</source>
         <translation>BSB byte byl úspěšně nastaven na 00h.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="277"/>
-        <location filename="WriteDialog.cpp" line="303"/>
+        <location filename="WriteDialog.cpp" line="276"/>
+        <location filename="WriteDialog.cpp" line="302"/>
         <source>failed.</source>
         <translation>chyba.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="280"/>
-        <location filename="WriteDialog.cpp" line="306"/>
-        <location filename="WriteDialog.cpp" line="350"/>
+        <location filename="WriteDialog.cpp" line="279"/>
+        <location filename="WriteDialog.cpp" line="305"/>
+        <location filename="WriteDialog.cpp" line="349"/>
         <source>Retry</source>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="290"/>
-        <location filename="WriteDialog.cpp" line="320"/>
+        <location filename="WriteDialog.cpp" line="289"/>
+        <location filename="WriteDialog.cpp" line="319"/>
         <source>done.</source>
         <translation>hotovo.</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="325"/>
+        <location filename="WriteDialog.cpp" line="324"/>
         <source>Done</source>
         <translation>Hotovo</translation>
     </message>
     <message>
-        <location filename="WriteDialog.cpp" line="331"/>
+        <location filename="WriteDialog.cpp" line="330"/>
         <source>Aborted.</source>
         <translation>Přerušeno.</translation>
     </message>
