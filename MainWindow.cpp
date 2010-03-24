@@ -333,6 +333,7 @@ bool MainWindow::save(MyFile * file, bool forceSaveDialog)
 		{
 			updateCurrentRow();
 			addRecentFile(file->fullPath());
+			setWindowTitle("RD2prog - " + currentFile()->name());
 			return true;
 		}
 	}
@@ -361,6 +362,7 @@ bool MainWindow::save(MyFile * file, bool forceSaveDialog)
 			addRecentFile(file->fullPath());
 
 		updateCurrentRow();
+		setWindowTitle("RD2prog - " + currentFile()->name());
 
 		return true;
 	}
