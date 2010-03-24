@@ -605,8 +605,8 @@ void MainWindow::on_actionCompile_triggered()
 
 	if(!m_settingsDialog->saveLstHexWithSource())
 	{
-		lstPath = QDir::temp().filePath(QFileInfo(path).baseName() + ".lst");
-		hexPath = QDir::temp().filePath(QFileInfo(path).baseName() + ".hex");
+		lstPath = QDir::toNativeSeparators(QDir::temp().filePath(QFileInfo(path).baseName() + ".lst"));
+		hexPath = QDir::toNativeSeparators(QDir::temp().filePath(QFileInfo(path).baseName() + ".hex"));
 	}
 
 	if(temp || !m_settingsDialog->saveLstHexWithSource())
