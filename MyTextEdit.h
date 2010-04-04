@@ -5,8 +5,6 @@
 #include <QMenu>
 #include <QPlainTextEdit>
 
-#include <QDebug>
-
 class MyLineNumbers;
 class Highlighter;
 

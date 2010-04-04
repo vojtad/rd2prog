@@ -36,12 +36,12 @@
         <translation>Průběh kompilace</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="164"/>
+        <location filename="MainWindow.ui" line="157"/>
         <source>Edit</source>
         <translation>Úpravy</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="178"/>
+        <location filename="MainWindow.ui" line="171"/>
         <location filename="MainWindow.ui" line="369"/>
         <location filename="MainWindow.ui" line="372"/>
         <source>Settings</source>
@@ -53,12 +53,12 @@
         <translation>Soubor</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="147"/>
+        <location filename="MainWindow.ui" line="179"/>
         <source>Help</source>
         <translation>Nápověda</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="154"/>
+        <location filename="MainWindow.ui" line="147"/>
         <source>Tools</source>
         <translation>Nástroje</translation>
     </message>
@@ -187,32 +187,33 @@
     </message>
     <message>
         <location filename="MainWindow.ui" line="493"/>
+        <location filename="MainWindow.cpp" line="807"/>
         <source>About</source>
         <translation>O programu</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="498"/>
+        <location filename="MainWindow.ui" line="502"/>
         <source>About Qt</source>
         <translation>O Qt</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="503"/>
+        <location filename="MainWindow.ui" line="507"/>
         <source>Full chip erase</source>
         <translation>Vymazat celý mikroprocesor</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="161"/>
+        <location filename="MainWindow.cpp" line="162"/>
         <source>Unnamed %1</source>
         <translation>Nepojmenovaný (%1)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="294"/>
+        <location filename="MainWindow.cpp" line="295"/>
         <source>Open files</source>
         <translation>Otevřít soubory</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="295"/>
-        <location filename="MainWindow.cpp" line="341"/>
+        <location filename="MainWindow.cpp" line="296"/>
+        <location filename="MainWindow.cpp" line="343"/>
         <source>Assembler source code (*.asm *.a51);;All files (*)</source>
         <oldsource>Assembler source code (*.asm *.a51);; </oldsource>
         <translation>Zdrojový kód v jazyce assembler (*.asm *.a51);;Všechny soubory (*)</translation>
@@ -222,83 +223,103 @@
         <translation type="obsolete">Všechny soubory (*)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="340"/>
+        <location filename="MainWindow.cpp" line="342"/>
         <source>Save %1 as...</source>
         <translation>Uložit %1 jako...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="350"/>
+        <location filename="MainWindow.cpp" line="352"/>
         <source>Cannot save file</source>
         <translation>Nelze uložit soubor</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="351"/>
+        <location filename="MainWindow.cpp" line="353"/>
         <source>File %1 could not be saved. Do you want to save it with another name?</source>
         <translation>Soubor %1 nelze uložit. Chcete vybrat jiné umístění?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="467"/>
+        <location filename="MainWindow.cpp" line="470"/>
         <source>No Recent Files</source>
         <translation>Žádné naposledy otevřené soubory</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="559"/>
+        <location filename="MainWindow.cpp" line="562"/>
         <source>Assembler wasn&apos;t found. You can change its path in Settings.</source>
         <translation>Assembler nebyl nalezen. Jeho umístění můžete změnit v Nastavení.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="672"/>
-        <location filename="MainWindow.cpp" line="724"/>
+        <location filename="MainWindow.cpp" line="675"/>
+        <location filename="MainWindow.cpp" line="727"/>
         <source>Listing file: %1</source>
         <translation>Soubor listing: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="677"/>
+        <location filename="MainWindow.cpp" line="680"/>
         <source>Cannot open Listing file</source>
         <translation>Nelze otevřít soubor Listing</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="678"/>
+        <location filename="MainWindow.cpp" line="681"/>
         <source>Listing file doesn&apos;t exist. You have to Compile source code at first.</source>
         <translation>Soubor Listing neexistuje. Musíte nejdřív zkompilovat zdrojový kód.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="798"/>
+        <location filename="MainWindow.cpp" line="801"/>
         <source>RD2prog - full chip erase</source>
         <translation>RD2prog - vymazat celý mikroprocesor</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="812"/>
+        <source>Author</source>
+        <translation>Autor</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="812"/>
+        <source>Git repository</source>
+        <translation>Git repozitář</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="813"/>
+        <source>Licensed under terms of the GNU GPL v2 license.</source>
+        <translation>Licensováno pod licencí GNU GPL verze 2.</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="813"/>
+        <source>Program was created as part of the individual shool-leaving exam in the &lt;a href=&quot;http://www.vos-sps-jicin.cz&quot;&gt;VOŠ a SPŠ Jičín&lt;/a&gt;.</source>
+        <translation>Program byl vytvořen v rámci individuální praktické maturitní práce na &lt;a href=&quot;http://www.vos-sps-jicin.cz&quot;&gt;VOŠ a SPŠ Jičín&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Cannot open listing file (%1)</source>
         <translation type="obsolete">Nelze otevřít soubor listing (%1)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="717"/>
+        <location filename="MainWindow.cpp" line="720"/>
         <source>No errors found. Compiled successfully.</source>
         <translation>Nebyly nalezeny žádné chyby. Kompilace proběhla úspěšně.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="721"/>
+        <location filename="MainWindow.cpp" line="724"/>
         <source>%1 errors found.</source>
         <translation>Nalezeno %1 chyb.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="725"/>
-        <location filename="MainWindow.cpp" line="753"/>
+        <location filename="MainWindow.cpp" line="728"/>
+        <location filename="MainWindow.cpp" line="756"/>
         <source>HEX file: %1</source>
         <translation>Soubor HEX: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="729"/>
+        <location filename="MainWindow.cpp" line="732"/>
         <source>Cannot open listing file: %1</source>
         <translation>Nelze otevřít soubor listing: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="758"/>
+        <location filename="MainWindow.cpp" line="761"/>
         <source>Cannot open HEX file</source>
         <translation>Nelze otevřít soubor HEX</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="759"/>
+        <location filename="MainWindow.cpp" line="762"/>
         <source>HEX file doesn&apos;t exist. You have to Compile source code at first.</source>
         <translation>Soubor HEX neexistuje. Musíte nejdřív zkompilovat zdrojový kód.</translation>
     </message>
@@ -337,39 +358,54 @@
         <translation>Cesta</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="70"/>
+        <location filename="SettingsDialog.ui" line="52"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.ui" line="77"/>
         <source>Save Listing and HEX with source code</source>
         <translation>Uložit Listing a HEX soubory se zdrojovým kódem</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="80"/>
+        <location filename="SettingsDialog.ui" line="87"/>
         <source>Serial Port</source>
         <translation>Sériový port</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="96"/>
+        <location filename="SettingsDialog.ui" line="103"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="109"/>
+        <location filename="SettingsDialog.ui" line="116"/>
         <source>Baudrate</source>
         <translation>Baudrate</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="138"/>
+        <location filename="SettingsDialog.ui" line="145"/>
         <source>Refresh</source>
         <translation>Obnovit</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="90"/>
+        <location filename="SettingsDialog.cpp" line="91"/>
         <source>%1 is available</source>
         <translation>%1 je dostupný</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="96"/>
+        <location filename="SettingsDialog.cpp" line="97"/>
         <source>%1 is not available</source>
         <translation>%1 není dostupný</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.cpp" line="187"/>
+        <source>Select assembler</source>
+        <translation>Najít assembler</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.cpp" line="188"/>
+        <source>All files (*)</source>
+        <translation>Všechny soubory (*)</translation>
     </message>
 </context>
 <context>

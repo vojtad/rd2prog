@@ -24,8 +24,6 @@ void ISPFrame::appendDataByte(quint8 byte)
 	m_data.append(byte);
 }
 
-#include <QDebug>
-
 QByteArray ISPFrame::data()
 {
 	QByteArray ret, ar;

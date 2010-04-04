@@ -1,6 +1,7 @@
 #include "MyTextEdit.h"
 
 #include <QContextMenuEvent>
+#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QKeyEvent>
@@ -167,10 +168,10 @@ void MyTextEdit::lineNumberAreaPaintEvent(QPaintEvent *event)
 
 Highlighter::Highlighter(QTextDocument * parent) : QSyntaxHighlighter(parent)
 {
-        QFile f(QDir::current().filePath("HighlighterRules.xml"));
+	QFile f(QDir::current().filePath("HighlighterRules.xml"));
 	if(!f.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
-                qWarning() << "Cannot open XML " << f.fileName() << ". Higlighting won't work.";
+				qWarning() << "Cannot open XML " << f.fileName() << ". Higlighting won't work.";
 		return;
 	}
 
@@ -182,7 +183,7 @@ Highlighter::Highlighter(QTextDocument * parent) : QSyntaxHighlighter(parent)
 	QDomElement root = domDoc.documentElement();
 	if(root.tagName() != "highlighterRules")
 	{
-                qWarning() << f.fileName() << " is not valid Highlighter XML. Higlighting won't work.";
+				qWarning() << f.fileName() << " is not valid Highlighter XML. Higlighting won't work.";
 		return;
 	}
 

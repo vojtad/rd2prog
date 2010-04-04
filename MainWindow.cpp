@@ -9,6 +9,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QSettings>
+#include <QTextStream>
 
 static QVector<char> g_chars;
 
@@ -383,7 +384,7 @@ void MainWindow::loadSettings()
 	else
 	{
 		QList<int> sizes;
-		sizes << 150 << 1;
+		sizes << 200 << 1;
 		ui.splitter->setSizes(sizes);
 	}
 
@@ -799,4 +800,16 @@ void MainWindow::on_actionFull_chip_erase_triggered()
 
 	dialog.setWindowTitle(tr("RD2prog - full chip erase"));
 	dialog.exec();
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+	QMessageBox::about(this, tr("About"), QString::fromUtf8(
+					   "<h1>RD2prog</h1>"
+					   "<p>%1: Vojtěch Drbohlav &lt;vojta.d@gmail.com&gt;<p>"
+					   "<p>%2: <a href=\"http://gitorious.org/rd2prog/rd2\">http://gitorious.org/rd2prog/rd2prog</a></p>"
+					   "<p>%3</p>"
+					   "<p>%4</p>").arg(tr("Author"), tr("Git repository"),
+										tr("Licensed under terms of the GNU GPL v2 license."), tr("Program was created as part of the individual shool-leaving exam in the <a href=\"http://www.vos-sps-jicin.cz\">VOŠ a SPŠ Jičín</a>."))
+					   );
 }

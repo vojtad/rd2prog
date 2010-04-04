@@ -1,14 +1,11 @@
 #include "CloseDialog.h"
-
-#include <QDebug>
-
 #include "MainWindow.h"
 
 CloseDialog::CloseDialog(const FileList & l, QWidget *parent) :
 	QDialog(parent),
 	m_closeModel(l, this)
 {
-    ui.setupUi(this);
+	ui.setupUi(this);
 
 	ui.listView->setModel(&m_closeModel);
 	ui.listView->selectAll();
@@ -16,14 +13,14 @@ CloseDialog::CloseDialog(const FileList & l, QWidget *parent) :
 
 void CloseDialog::changeEvent(QEvent *e)
 {
-    QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui.retranslateUi(this);
-        break;
-    default:
-        break;
-    }
+	QDialog::changeEvent(e);
+	switch (e->type()) {
+	case QEvent::LanguageChange:
+		ui.retranslateUi(this);
+		break;
+	default:
+		break;
+	}
 }
 
 void CloseDialog::on_buttonBox_clicked(QAbstractButton * button)

@@ -47,6 +47,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QToolButton" name="toolButtonBrowse">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="labePathStatus">
           <property name="maximumSize">
            <size>

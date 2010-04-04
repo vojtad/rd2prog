@@ -310,7 +310,6 @@ bool SerialPortInterface::open(OpenMode mode)
 		m_handle = CreateFileA(port.toAscii(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, NULL, NULL);
 		if(m_handle != INVALID_HANDLE_VALUE)
 		{
-			qDebug() << port;
 			QIODevice::open(mode);
 
 			/*configure port settings*/
@@ -437,7 +436,6 @@ void SerialPortInterface::setDTR(bool set)
 
 qint64 SerialPortInterface::readData(char * data, qint64 maxSize)
 {
-	qDebug() << maxSize;
 	DWORD retVal = 0;
 	ReadFile(m_handle, (void*)data, (DWORD)maxSize, &retVal, NULL);
 	return qint64(retVal);

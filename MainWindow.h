@@ -67,7 +67,8 @@ private:
 	void updateCurrentRow();
 
 private slots:
-	void on_actionFull_chip_erase_triggered();
+	void on_actionAbout_triggered();
+ void on_actionFull_chip_erase_triggered();
 	void on_treeViewCompileIssues_activated(const QModelIndex & index);
 	void on_actionShow_HEX_triggered();
 	void on_actionShow_Listing_triggered();

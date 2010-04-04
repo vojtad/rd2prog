@@ -1,6 +1,7 @@
 #include "SettingsDialog.h"
 
 #include <QDir>
+#include <QFileDialog>
 #include <QFileInfo>
 
 SettingsDialog::SettingsDialog(QWidget * parent) :
@@ -179,4 +180,15 @@ void SettingsDialog::checkAssemblerPath(const QString & text)
 		ui.labePathStatus->setPixmap(QPixmap(":/icons/icon-ok.png"));
 	else
 		ui.labePathStatus->setPixmap(QPixmap(":/icons/icon-cancel.png"));
+}
+
+void SettingsDialog::on_toolButtonBrowse_clicked()
+{
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Select assembler"), QDir::currentPath(),
+														tr("All files (*)"));
+	if(!fileName.isEmpty())
+	{
+		ui.lineEditPath->setText(fileName);
+		checkAssemblerPath(fileName);
+	}
 }

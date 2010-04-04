@@ -35,7 +35,8 @@ private:
 	void loadSettings();
 
 private slots:
-	void on_pushButton_clicked();
+	void on_toolButtonBrowse_clicked();
+ void on_pushButton_clicked();
 	void on_comboBoxBaudrate_currentIndexChanged(const QString & speed);
 	void on_comboBoxPort_currentIndexChanged(const QString & port);
 
